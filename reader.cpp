@@ -68,6 +68,7 @@ void readLines(std::string& filename)
     {
 
         getline(in, code, in.widen(','));
+
         getline(in, name, in.widen(','));
 
 
@@ -96,3 +97,5 @@ struct Line{
     std::string code;
     std::string name;
 };
+
+

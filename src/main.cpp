@@ -9,7 +9,9 @@ int main()
     string file_lines = "../dataset/lines.csv";
 
     net.readStops(file_stops);
+    cout << "Just Read Stops!! \n";
     net.readLines(file_lines);
+    cout << "Just Read Lines!! \n";
     
     return 0;
 }

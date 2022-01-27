@@ -5,7 +5,7 @@ TransportNetwork::TransportNetwork()
     g = nullptr;
 }
 
-void TransportNetwork::readStops(string& filename)
+void TransportNetwork::readStops(string &filename)
 {
 
     std::vector<Stop> stops;
@@ -20,7 +20,6 @@ void TransportNetwork::readStops(string& filename)
     std::string latitude;
     std::string longitude;
 
-
     getline(in, dummy);
 
     while (in.peek() != EOF)
@@ -32,66 +31,72 @@ void TransportNetwork::readStops(string& filename)
         getline(in, latitude, in.widen(','));
         getline(in, longitude, in.widen('\n'));
 
-        //cout << code << ", " << name << ", " << zone << ", " << latitude << ", " << longitude << endl;
+        // cout << code << ", " << name << ", " << zone << ", " << latitude << ", " << longitude << endl;
         Stop stop = {code, name, zone, stof(latitude), stof(longitude)};
         stops.push_back(stop);
-
     }
-
-
+    cout << "Read " << stops.size() << " stops!\n";
     g = new Graph(stops.size());
     g->getStops() = stops;
-
 }
 
-
-void TransportNetwork::readLines(std::string& filename)
+void TransportNetwork::readLines(std::string &filename)
 {
 
     std::ifstream in(filename);
-    std::ifstream line;
 
     std::string dummy;
     std::string code;
     std::string name;
-
-    int previous_index;
-    int curr_index;
-
-
-    std::string curr_stop, previous_stop;
-
+    int number_of_lines_read = 0;
+    int number_of_unique_lines =0;
     getline(in, dummy);
-
-    while (in)
+    while (getline(in, code, in.widen(',')))
     {
-
-        getline(in, code, in.widen(','));
         getline(in, name, in.widen('\n'));
 
+        string line_filename_0 = "../dataset/line_" + code + "_0.csv";
+        string line_filename_1 = "../dataset/line_" + code + "_1.csv";
+        //cout << "Reading Line Code :" << code << std::endl;
+        //cout << "Reading Line Name:" << name << std::endl;
+        // cout << "Previous Index"  <<  previous_index << std::endl;
+        // cout << previous_stop << endl;
 
-        line.open("../dataset/line_" + code + "_0.csv");
-        getline(line, dummy, '\n');
-        getline(line, previous_stop, '\n');
+        //cout << "Sentido Normal!:\n";
+        // nao para se tiver empty lines
+        readLine(line_filename_0,code);
 
-        previous_index = findStop(previous_stop); 
-        cout << previous_stop << endl;
-        while (line.peek() != EOF)
-        {
-            
-            getline(line, curr_stop, '\n');
-            cout << curr_stop << ", " << previous_stop << endl;
-            curr_index = findStop(curr_stop);
-            g->addEdge(previous_index, curr_index, 1);//distanceFunc(previous_stop, curr_stop));
+        //cout << "Sentido Inverso!: \n";
+        readLine(line_filename_1,code);
+        number_of_lines_read+=2; 
+        number_of_unique_lines++;
+    }
+    cout << "Read in total : " << number_of_lines_read << " files\n";
+    cout << "Read in total : " << number_of_unique_lines << " lines \n";
+}
 
-            curr_stop = previous_stop;
-        }
+void TransportNetwork::readLine(string& line_filename,string& line_code){
 
-        g->getStops().at(findStop(curr_stop)).lines.insert(code);
 
+    int next_stop_index;
+    int current_stop_index;
+
+    std::string current_stop, next_stop;
+    std::ifstream line(line_filename);
+
+
+    // cout << "Reading Line filename:" << line_filename << std::endl;
+    // cout << "Current Stop     ||      Next Stop\n";
+    // cout << "------------------------------------\n";
+
+    while (getline(line, next_stop))
+    {
+        //cout << current_stop << "              " << next_stop << std::endl;
+        next_stop_index = findStop(next_stop);
+        g->addEdge(current_stop_index, next_stop_index, 1); // distanceFunc(previous_stop, curr_stop));
+        // Arrived
+        current_stop = next_stop;
     }
 
-
-
-
+    g->getStops().at(findStop(current_stop)).lines.insert(line_code);
 }

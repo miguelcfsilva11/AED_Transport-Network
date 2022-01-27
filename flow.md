@@ -20,9 +20,10 @@ o que significa que as respostas dos algoritmos vao significar coisas diferentes
 
 # Estado das Coisas
 
-[] Entender a Semantica dos ficheiros csv
+[x] Entender a Semantica dos ficheiros csv
 
-[] Ler Ficheiros 
+[x] Ler Ficheiros 
+    [] Testar se os grafos estao a ser criados corretamente
 
 
 ## Bater Nestas Funcionalidades
@@ -54,3 +55,10 @@ Possibilitar o fecho de certas paragens ou linhas. (Remover nodes e edges)
 Adicionar novas linhas e paragens.
 
 Queres ir sacar o matplotlib? maybe ?
+
+
+
+## Probles To solve
+
+
+- In read Lines assure it stops if  reaches empty line

@@ -41,7 +41,9 @@ public:
     void addEdge(int src, int dest, int weight = 1);
     void addStop(Stop& stop);
 
-    vector<Stop> getStops();
+    int findStop(Stop& stop);
+
+    vector<Stop>& getStops();
 
     // ----- Functions to implement in this class -----
     int prim(int v);

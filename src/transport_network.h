@@ -13,15 +13,17 @@ class TransportNetwork
 
 private:
 
-    Graph g;
+    Graph* g;
 
 public:
 
+    TransportNetwork();
+
     void readStops(string& filename);
     void readLines(string& filename);
-    int findStop(string& code);
+    int findStop(string& code) {return 0;};
 
-    float distanceFunc (string& code1, string& code2);
+    float distanceFunc (string& code1, string& code2) {return 0;};
 
 };
 

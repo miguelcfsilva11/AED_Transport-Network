@@ -19,7 +19,18 @@ void Graph::addStop(Stop& stop)
     stops.push_back(stop);
 }
 
-vector<Stop>Graph::getStops()
+int Graph::findStop(Stop& stop)
+{
+    for (size_t i = 0; i < stops.size(); i++)
+    {
+        if (stop.code == stops[i].code)
+            return i;
+    }
+
+    return -1;
+}
+
+vector<Stop>&Graph::getStops()
 {
     return stops;
 }

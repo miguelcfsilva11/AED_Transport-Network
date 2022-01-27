@@ -13,19 +13,24 @@
 using namespace std;
 
 class Graph {
+    
     struct Edge {
         int dest;   //Destination node
-        
         int weight; //An integer weight
+        bool byFoot;
     };
 
     struct Node {
-        list<Edge> adj; //The list of outgoing edges (to adjacent nodes)
+
+        list<Edge> adj;     //The list of outgoing edges (to adjacent nodes)
+
     };
+
 
     int n;              // Graph size (vertices are numbered from 1 to n)
     bool hasDir;        // false: undirect; true: directed
-    vector<Node> nodes; // The list of nodes being represented
+    vector<Node> nodes;
+    vector<Stop> stops; // The list of nodes being represented
 
 public:
     // Constructor: nr nodes and direction (default: undirected)
@@ -40,3 +45,11 @@ public:
 };
 
 #endif
+
+
+main 
+
+ -> readers
+ -> graph
+
+graph -> stop

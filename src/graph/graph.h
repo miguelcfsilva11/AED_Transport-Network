@@ -6,6 +6,7 @@
 
 #include "minHeap.h"
 #include "disjointSets.h"
+#include "stop.h"
 #include <vector>
 #include <list>
 #include <iostream>
@@ -38,6 +39,9 @@ public:
 
     // Add edge from source to destination with a certain weight
     void addEdge(int src, int dest, int weight = 1);
+    void addStop(Stop& stop);
+
+    vector<Stop> getStops();
 
     // ----- Functions to implement in this class -----
     int prim(int v);
@@ -45,11 +49,3 @@ public:
 };
 
 #endif
-
-
-main 
-
- -> readers
- -> graph
-
-graph -> stop

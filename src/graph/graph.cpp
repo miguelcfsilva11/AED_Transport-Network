@@ -14,7 +14,15 @@ void Graph::addEdge(int src, int dest, int weight) {
     if (!hasDir) nodes[dest].adj.push_back({src, weight});
 }
 
+void Graph::addStop(Stop& stop)
+{
+    stops.push_back(stop);
+}
 
+vector<Stop>Graph::getStops()
+{
+    return stops;
+}
 // ----------------------------------------------------------
 // Exercicio 3: Algoritmo de Prim
 // ----------------------------------------------------------

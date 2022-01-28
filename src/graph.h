@@ -22,7 +22,6 @@ class Graph {
     };
 
     struct Node {
-
         list<Edge> adj;     //The list of outgoing edges (to adjacent nodes)
 
     };
@@ -31,7 +30,7 @@ class Graph {
     int n;              // Graph size (vertices are numbered from 1 to n)
     bool hasDir;        // false: undirect; true: directed
     vector<Node> nodes;
-    vector<Stop> stops; // The list of nodes being represented
+    vector<Stop> stops;
 
 public:
     // Constructor: nr nodes and direction (default: undirected)
@@ -39,15 +38,18 @@ public:
 
     // Add edge from source to destination with a certain weight
     void addEdge(int src, int dest, int weight = 1);
-    void addStop(Stop& stop);
-
-    int findStop(Stop& stop);
-
-    vector<Stop>& getStops();
 
     // ----- Functions to implement in this class -----
     int prim(int v);
     int kruskal();
+
+    void BFS(int startingNode);
+    vector<Stop>& getStops();
+    void setStops(vector<Stop>& stop);
+    int getStopIndex(string &stop_code);
+    void printAdjancies(int node );
+    
 };
+
 
 #endif

@@ -20,7 +20,7 @@ public:
 public:
 
     TransportNetwork();
-
+    ~TransportNetwork();
     void readStops(string& filename);
     void readLines(string& filename);
     void readLine(string& filename ,string& code);

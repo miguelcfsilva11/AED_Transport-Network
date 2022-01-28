@@ -110,14 +110,17 @@ void TransportNetwork::readLine(string& line_filename,string& line_code){
 
     while (getline(line, next_stop) && next_stop !=" "  && next_stop != "\n")
     {   
-        //cout << current_stop << "              " << next_stop << std::endl;
-        next_stop_index = g->getStopIndex(next_stop);
-        g->addEdge(current_stop_index, next_stop_index, 1.0); // distanceFunc(previous_stop, curr_stop));
+        //cout << current_stop << "            " << next_stop << std::endl;
     
+        next_stop_index = g->getStopIndex(next_stop);
+        g->getStops().at(next_stop_index).lines.insert(line_code);
+        g->addEdge(current_stop_index, next_stop_index, 1.0); // distanceFunc(previous_stop, curr_stop));
+        
         // Arrived
         current_stop = next_stop;
         current_stop_index = next_stop_index;
     }
+
 
 }
 
@@ -125,4 +128,10 @@ void TransportNetwork::readLine(string& line_filename,string& line_code){
 
 Graph* TransportNetwork::getGraph(){
     return g;
+}
+
+
+TransportNetwork::~TransportNetwork(){
+    delete g;
+    cout << "No more memory leaks";
 }

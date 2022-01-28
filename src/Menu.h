@@ -8,7 +8,7 @@
 #include <string>
 #include <set>
 
-using std::vector, std::string;
+using namespace std;
 
 struct choosingWay
 {

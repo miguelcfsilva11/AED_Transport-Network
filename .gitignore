@@ -33,3 +33,5 @@
 
 # Coding environment specifics
 .vscode
+.idea
+cmake-build-debug

@@ -12,10 +12,12 @@ graph.o: graph.cpp graph.h
 transport_network.o: transport_network.cpp transport_network.h
 	g++ -c transport_network.cpp
 
-
+greetings:
+	@echo "Hi user this is our graph project for the class AED 2021/2022"
 run :
 	@./output
 
 clean: 
 	@echo "Cleaning object and binary files"
 	rm  *.o output a.out
+

@@ -133,7 +133,7 @@ vector<int> Graph::primPath(int v)
 }
 */
 
-pair<list<int>, float> Graph::dijkstraCostPath(int v, int k)
+pair<list<int>, float> Graph::shortestCostPath(int v, int k)
 {
 
     unordered_map<int, float> distance;
@@ -183,21 +183,15 @@ pair<list<int>, float> Graph::dijkstraCostPath(int v, int k)
 
 }
 
-
-
-int changedZone(int current, int destination){
-
-    return 0;
-}
-pair<list<int>, int> Graph::dijkstraZonePath(int v, int k)
+pair<list<int>, float> Graph::minLinesPath(int v, int k)
 {
-      
-    unordered_map<int, int> distance;
+
+    unordered_map<int, float> distance;
     unordered_map<int, int> pred;
 
     MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
 
-    for (int i = 0; i < nodes.size(); i++)
+    for (int i = 1; i < nodes.size(); i++)
     {
         if (i == v) distance[i] = 0;
         else distance[i] = INT_MAX/2;
@@ -205,6 +199,7 @@ pair<list<int>, int> Graph::dijkstraZonePath(int v, int k)
     }
 
     pred[v] = v;
+    bool found = false;
 
     while(priorityQueue.getSize() != 0)
     {
@@ -214,11 +209,36 @@ pair<list<int>, int> Graph::dijkstraZonePath(int v, int k)
         for(auto edge : nodes[curr_node].adj)
         {
             
-            if (distance[edge.dest] > distance[curr_node] + edge.weight)
-                distance[edge.dest] = distance[curr_node] + edge.weight;
+            for (string line: stops[curr_node].lines)
+
+                if (stops[edge.dest].lines.find(line) != stops[edge.dest].lines.end())
+                {
+
+                    if (distance[edge.dest] > distance[curr_node])
+                    {
+                        distance[edge.dest] = distance[curr_node];
+                        pred[edge.dest] = curr_node;
+                    }
+                    found = true;
+                    break;
+
+                }
+
+            if (found)
+            {
+                found = false;
+                continue;
+            }
+
+            if (distance[edge.dest] > distance[curr_node] + 1)
+            {
+
+                distance[edge.dest] = distance[curr_node] + 1;
                 pred[edge.dest] = curr_node;
-            
-        }
+            }
+
+
+        }   
 
     }
 

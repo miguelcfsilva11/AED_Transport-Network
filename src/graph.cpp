@@ -141,7 +141,8 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
 
     MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
 
-    for (int i = 1; i < nodes.size(); i++)
+    //Alterado para poder comecar em 0
+    for (int i = 0; i < nodes.size(); i++)
     {
         if (i == v) distance[i] = 0;
         else distance[i] = INT_MAX/2;
@@ -181,7 +182,6 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
     return make_pair(dijkstraPath, dijkstraCost);
 
 }
-
 
 pair<list<int>, float> Graph::minLinesPath(int v, int k)
 {

@@ -15,9 +15,9 @@ void Graph::addEdge(int src, int dest, float weight)
 {
     if (src < 0 || src > n - 1 || dest < 0 || dest > n - 1)
         return;
-    nodes[src].adj.push_back({dest, weight,0});
+    nodes[src].adj.push_back({dest, weight, 0});
     if (!hasDir)
-        nodes[dest].adj.push_back({src, weight,0});
+        nodes[dest].adj.push_back({src, weight, 0});
 }
 
 void Graph::setStops(vector<Stop> &stops)
@@ -25,7 +25,8 @@ void Graph::setStops(vector<Stop> &stops)
     this->stops = stops;
 }
 
-vector<Stop>&  Graph::getStops(){
+vector<Stop> &Graph::getStops()
+{
     return this->stops;
 }
 int Graph::getStopIndex(string &code)
@@ -110,6 +111,7 @@ vector<int> Graph::primPath(int v)
     int d;
     alreadySeen.push_back(nodes[0]);
 
+    n³
     for (int j = 0; j < v; j++)
     {
         for (int i = 0; i < alreadySeen.size(); i++)
@@ -132,137 +134,51 @@ vector<int> Graph::primPath(int v)
     return caminhos;
 }
 */
-
-pair<list<int>, float> Graph::shortestCostPath(int v, int k)
+float Graph::dijkstraDistance(int origin, int chegada)
 {
+    cout << "Ir de  " << stops[origin].code << " Até : ";
+    cout << stops[chegada].code << endl;
 
-    unordered_map<int, float> distance;
-    unordered_map<int, int> pred;
-    unordered_set<int> visited;
+    vector<int> caminhos;
+    // Nodes that have been visited
+    unordered_set<int> visitados;
 
-    MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
+    MinHeap<int, float> sorted_distances(n, n);
+    unordered_map<int, float> node_distance_from_origin;
 
-    //Alterado para poder comecar em 0
-    for (int i = 0; i < nodes.size(); i++)
+    int MAX_DISTANCE = INT32_MAX;
+    // Set all nodes at max Distance
+    // At the begining all nodes are unreachable
+    for (int i = 0; i < n; i++)
     {
-        if (i == v) distance[i] = 0;
-        else distance[i] = INT_MAX/2;
-        priorityQueue.insert(i, distance[i]);
 
+        node_distance_from_origin[i] = MAX_DISTANCE;
+        sorted_distances.insert(i, MAX_DISTANCE);
     }
 
-    pred[v] = v;
+    // We star at the origin distance is 0
+    node_distance_from_origin[origin] = 0;
+    sorted_distances.decreaseKey(origin, 0);
 
-    while(priorityQueue.getSize() != 0)
+    // Encontrar o caminho mais curto preciso de precorrer todos os nos
+    int current;
+    while (visitados.size() != n)
     {
+        // Choose best node  in first iteration we force the starting node
+        current = sorted_distances.removeMin();
+        visitados.insert(current);
 
-        int curr_node = priorityQueue.removeMin();
-        visited.insert(curr_node);
-
-        for(auto edge : nodes[curr_node].adj)
+        for (Edge e : nodes[current].adj)
         {
-            
-            if (distance[edge.dest] > distance[curr_node] + edge.weight && visited.find(edge.dest) != visited.end())
-                distance[edge.dest] = distance[curr_node] + edge.weight;
-                pred[edge.dest] = curr_node;
-                if(stops[edge.dest].code == "ALFG1")
-                    cout << stops[curr_node].code << endl;
-            
+            if (visitados.find(e.dest) == visitados.end() &&
+                node_distance_from_origin[current] + e.weight < node_distance_from_origin[e.dest])
+            {
+                node_distance_from_origin[e.dest] = node_distance_from_origin[current] + e.weight;
+                sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current] + e.weight);
+            }
         }
-
     }
 
-    list<int> dijkstraPath;
-    float dijkstraCost = distance[k];
-    int nextPred = k;
 
-    dijkstraPath.insert(dijkstraPath.begin(), k);
-
-    cout << "Reachable" << endl;
-    string trash;
-    while (nextPred != v)
-    {
-        cout << stops[nextPred].code << endl;
-        nextPred = pred[nextPred];
-        cin >> trash;
-        dijkstraPath.insert(dijkstraPath.begin(), nextPred);
-    }
-
-    return make_pair(dijkstraPath, dijkstraCost);
-
-}
-
-pair<list<int>, float> Graph::minLinesPath(int v, int k)
-{
-
-    unordered_map<int, float> distance;
-    unordered_map<int, int> pred;
-
-    MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
-
-    for (int i = 1; i < nodes.size(); i++)
-    {
-        if (i == v) distance[i] = 0;
-        else distance[i] = INT_MAX/2;
-        priorityQueue.insert(i, distance[i]);
-    }
-
-    pred[v] = v;
-    bool found = false;
-
-    while(priorityQueue.getSize() != 0)
-    {
-
-        int curr_node = priorityQueue.removeMin();
-
-        for(auto edge : nodes[curr_node].adj)
-        {
-            
-            for (string line: stops[curr_node].lines)
-
-                if (stops[edge.dest].lines.find(line) != stops[edge.dest].lines.end())
-                {
-
-                    if (distance[edge.dest] > distance[curr_node])
-                    {
-                        distance[edge.dest] = distance[curr_node];
-                        pred[edge.dest] = curr_node;
-                    }
-                    found = true;
-                    break;
-
-                }
-
-            if (found)
-            {
-                found = false;
-                continue;
-            }
-
-            if (distance[edge.dest] > distance[curr_node] + 1)
-            {
-
-                distance[edge.dest] = distance[curr_node] + 1;
-                pred[edge.dest] = curr_node;
-            }
-
-
-        }   
-
-    }
-
-    list<int> dijkstraPath;
-    float dijkstraCost = distance[k];
-    int nextPred = k;
-
-    dijkstraPath.insert(dijkstraPath.begin(), k);
-
-    while (nextPred != v)
-    {
-        nextPred = pred[nextPred];
-        dijkstraPath.insert(dijkstraPath.begin(), nextPred);
-    }
-
-    return make_pair(dijkstraPath, dijkstraCost);
-
+    return node_distance_from_origin[chegada];
 }

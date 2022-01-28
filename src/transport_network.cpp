@@ -112,7 +112,7 @@ void TransportNetwork::readLine(string& line_filename,string& line_code){
     {   
         //cout << current_stop << "              " << next_stop << std::endl;
         next_stop_index = g->getStopIndex(next_stop);
-        g->addEdge(current_stop_index, next_stop_index, 1); // distanceFunc(previous_stop, curr_stop));
+        g->addEdge(current_stop_index, next_stop_index, 1.0); // distanceFunc(previous_stop, curr_stop));
     
         // Arrived
         current_stop = next_stop;

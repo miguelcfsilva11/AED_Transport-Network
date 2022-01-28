@@ -49,7 +49,8 @@ public:
     void setStops(vector<Stop>& stop);
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
-    pair<list<int>, float> dijkstraCostPath(int v, int k);
+    pair<list<int>, float> shortestCostPath(int v, int k);
+    pair<list<int>, float> minLinesPath(int v, int k);
 };
 
 

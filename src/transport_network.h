@@ -26,7 +26,7 @@ public:
     void readLine(string& filename ,string& code);
     Graph * getGraph() ;
 
-    float distanceFunc (string& code1, string& code2) {return 0;};
+    float distanceFunc (string& code1, string& code2);
 
 };
 

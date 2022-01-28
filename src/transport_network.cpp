@@ -1,5 +1,5 @@
 #include "transport_network.h"
-
+#include <math.h>
 TransportNetwork::TransportNetwork()
 {
     g = nullptr;
@@ -53,7 +53,7 @@ void TransportNetwork::readLines(std::string &filename, unordered_set<string> to
     getline(in, dummy);
     while (getline(in, code, in.widen(',')))
     {
-        if(toExclude.find(code) != toExclude.end())
+        if (toExclude.find(code) != toExclude.end())
             continue;
 
         getline(in, name, in.widen('\n'));
@@ -114,7 +114,7 @@ void TransportNetwork::readLine(string &line_filename, string &line_code)
 
         next_stop_index = g->getStopIndex(next_stop);
         g->getStops().at(next_stop_index).lines.insert(line_code);
-        g->addEdge(current_stop_index, next_stop_index, 1.0); // distanceFunc(previous_stop, curr_stop));
+        g->addEdge(current_stop_index, next_stop_index, distanceFunc(current_stop, next_stop));
 
         // Arrived
         current_stop = next_stop;
@@ -131,4 +131,22 @@ TransportNetwork::~TransportNetwork()
 {
     delete g;
     cout << "No more memory leaks";
+}
+
+float TransportNetwork::distanceFunc(string &code1, string &code2)
+{
+    int a, b;
+    float lat1, lat2, long1, long2, distance;
+
+    a = g->getStopIndex(code1);
+    b = g->getStopIndex(code2);
+    lat1 =  g->getStops()[a].latitude;
+    long1 = g->getStops()[a].longitude;
+    lat2 =  g->getStops()[b].latitude;
+    long2 = g->getStops()[b].longitude;
+
+    distance = 2*6371* asin(sqrt(pow(sin((lat2 - lat1) / 2), 2) + cos(lat1)* cos(lat2) *pow(sin((long2 - long1) / 2), 2)));
+    if (distance < 0 )
+        cout << "Oh NO !!!!!\n";
+    return distance;
 }

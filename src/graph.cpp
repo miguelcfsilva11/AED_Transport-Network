@@ -138,6 +138,7 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
 
     unordered_map<int, float> distance;
     unordered_map<int, int> pred;
+    unordered_set<int> visited;
 
     MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
 
@@ -147,6 +148,7 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
         if (i == v) distance[i] = 0;
         else distance[i] = INT_MAX/2;
         priorityQueue.insert(i, distance[i]);
+
     }
 
     pred[v] = v;
@@ -155,13 +157,16 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
     {
 
         int curr_node = priorityQueue.removeMin();
+        visited.insert(curr_node);
 
         for(auto edge : nodes[curr_node].adj)
         {
             
-            if (distance[edge.dest] > distance[curr_node] + edge.weight)
+            if (distance[edge.dest] > distance[curr_node] + edge.weight && visited.find(edge.dest) != visited.end())
                 distance[edge.dest] = distance[curr_node] + edge.weight;
                 pred[edge.dest] = curr_node;
+                if(stops[edge.dest].code == "ALFG1")
+                    cout << stops[curr_node].code << endl;
             
         }
 
@@ -173,9 +178,13 @@ pair<list<int>, float> Graph::shortestCostPath(int v, int k)
 
     dijkstraPath.insert(dijkstraPath.begin(), k);
 
+    cout << "Reachable" << endl;
+    string trash;
     while (nextPred != v)
     {
+        cout << stops[nextPred].code << endl;
         nextPred = pred[nextPred];
+        cin >> trash;
         dijkstraPath.insert(dijkstraPath.begin(), nextPred);
     }
 

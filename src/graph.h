@@ -10,6 +10,7 @@
 #include <vector>
 #include <list>
 #include <iostream>
+#include <climits>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ class Graph {
     
     struct Edge {
         int dest;   //Destination node
-        int weight; //An integer weight
+        float weight; //An integer weight
         bool byFoot;
     };
 
@@ -48,6 +49,7 @@ public:
     // ----- Functions to implement in this class -----
     int prim(int v);
     int kruskal();
+    pair<list<int>, float> dijkstraCostPath(int v, int k);
 };
 
 #endif

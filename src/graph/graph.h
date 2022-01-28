@@ -45,7 +45,10 @@ public:
 
     // ----- Functions to implement in this class -----
     int prim(int v);
+    vector<int> primPath(int v);
     int kruskal();
 };
 
 #endif
+
+

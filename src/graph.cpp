@@ -141,7 +141,63 @@ pair<list<int>, float> Graph::dijkstraCostPath(int v, int k)
 
     MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
 
-    for (int i = 1; i < nodes.size(); i++)
+    //Alterado para poder comecar em 0
+    for (int i = 0; i < nodes.size(); i++)
+    {
+        if (i == v) distance[i] = 0;
+        else distance[i] = INT_MAX/2;
+        priorityQueue.insert(i, distance[i]);
+    }
+
+    pred[v] = v;
+
+    while(priorityQueue.getSize() != 0)
+    {
+
+        int curr_node = priorityQueue.removeMin();
+
+        for(auto edge : nodes[curr_node].adj)
+        {
+            
+            if (distance[edge.dest] > distance[curr_node] + edge.weight)
+                distance[edge.dest] = distance[curr_node] + edge.weight;
+                pred[edge.dest] = curr_node;
+            
+        }
+
+    }
+
+    list<int> dijkstraPath;
+    float dijkstraCost = distance[k];
+    int nextPred = k;
+
+    dijkstraPath.insert(dijkstraPath.begin(), k);
+
+    while (nextPred != v)
+    {
+        nextPred = pred[nextPred];
+        dijkstraPath.insert(dijkstraPath.begin(), nextPred);
+    }
+
+    return make_pair(dijkstraPath, dijkstraCost);
+
+}
+
+
+
+int changedZone(int current, int destination){
+
+    return 0;
+}
+pair<list<int>, int> Graph::dijkstraZonePath(int v, int k)
+{
+      
+    unordered_map<int, int> distance;
+    unordered_map<int, int> pred;
+
+    MinHeap<int, float> priorityQueue = MinHeap<int,float>(n, n);
+
+    for (int i = 0; i < nodes.size(); i++)
     {
         if (i == v) distance[i] = 0;
         else distance[i] = INT_MAX/2;

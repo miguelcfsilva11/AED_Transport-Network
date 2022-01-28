@@ -49,9 +49,6 @@ distância; implica menos mudanças de autocarro (de linha); fica mais barato (p
 caminhar um pouco para uma outra paragem “vizinha” (que esteja a menos do que uma certa distância).
 
 
-
-
-
 ## Açucar de Trabalho
 Implementar minimum spanning trees.
 filtro no inicio dos dados iniciais.
@@ -62,7 +59,12 @@ Queres ir sacar o matplotlib? maybe ?
 
 
 
-## Probles To solve
-
+## Problems To solve
 
 - In read Lines assure it stops if  reaches empty line
+
+
+
+Dar a possibilidade de excluir zonas também!!!!!!
+
+

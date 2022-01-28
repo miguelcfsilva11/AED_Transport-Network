@@ -50,6 +50,7 @@ public:
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
     pair<list<int>, float> dijkstraCostPath(int v, int k);
+    pair<list<int>, int > dijkstraZonePath(int v, int k);
 };
 
 

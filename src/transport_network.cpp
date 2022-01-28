@@ -3,12 +3,13 @@
 TransportNetwork::TransportNetwork()
 {
     g = nullptr;
-
 }
 
 void TransportNetwork::readStops(string &filename)
-{ 
-    vector<Stop> stops;
+{
+
+    std::vector<Stop> stops;
+
     std::ifstream in(filename);
 
     std::string dummy;
@@ -35,16 +36,13 @@ void TransportNetwork::readStops(string &filename)
         stops.push_back(stop);
     }
     cout << "Read " << stops.size() << " stops!\n";
-    g = new Graph(stops.size(),true);
-    g->setStops(stops);
-    cout << " Can create graph" << endl;
-
+    g = new Graph(stops.size());
+    g->getStops() = stops;
 }
 
 void TransportNetwork::readLines(std::string &filename)
 {
 
-    cout << "Reading Lines!" << endl;
     std::ifstream in(filename);
 
     std::string dummy;
@@ -59,8 +57,10 @@ void TransportNetwork::readLines(std::string &filename)
 
         string line_filename_0 = "../dataset/line_" + code + "_0.csv";
         string line_filename_1 = "../dataset/line_" + code + "_1.csv";
-        // cout << "Reading Line Code :" << code << std::endl;
-        // cout << "Reading Line Name:" << name << std::endl;
+        //cout << "Reading Line Code :" << code << std::endl;
+        //cout << "Reading Line Name:" << name << std::endl;
+        // cout << "Previous Index"  <<  previous_index << std::endl;
+        // cout << previous_stop << endl;
 
         //cout << "Sentido Normal!:\n";
         // nao para se tiver empty lines
@@ -88,41 +88,15 @@ void TransportNetwork::readLine(string& line_filename,string& line_code){
     // cout << "Reading Line filename:" << line_filename << std::endl;
     // cout << "Current Stop     ||      Next Stop\n";
     // cout << "------------------------------------\n";
-    //Reading the trash out
-    getline(line,current_stop);
-    //cout<< current_stop << " ";
-    getline(line,current_stop);
-    //cout<< current_stop << "\n";
-    current_stop_index = g->getStopIndex(current_stop);
-    if(current_stop_index == -1)
-        return;
-   
-    //There's a case where some lines are empty apparently Such Has
-    // Trying to Find  That code does not exist!!
-    // ../dataset/line_300_1.csv
-    // Trying to Find  That code does not exist!!
-    // ../dataset/line_301_1.csv
-    // Trying to Find  That code does not exist!!
-    // ../dataset/line_302_1.csv
-    // Trying to Find  That code does not exist!!
-    // ../dataset/line_303_1.csv
-    string trash;
 
-    while (getline(line, next_stop) && next_stop !=" "  && next_stop != "\n")
-    {   
+    while (getline(line, next_stop))
+    {
         //cout << current_stop << "              " << next_stop << std::endl;
-        next_stop_index = g->getStopIndex(next_stop);
-        g->addEdge(current_stop_index, next_stop_index, 1.0); // distanceFunc(previous_stop, curr_stop));
-    
+        next_stop_index = findStop(next_stop);
+        g->addEdge(current_stop_index, next_stop_index, 1); // distanceFunc(previous_stop, curr_stop));
         // Arrived
         current_stop = next_stop;
-        current_stop_index = next_stop_index;
     }
 
-}
-
-
-
-Graph* TransportNetwork::getGraph(){
-    return g;
+    g->getStops().at(findStop(current_stop)).lines.insert(line_code);
 }

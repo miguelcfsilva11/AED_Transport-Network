@@ -24,6 +24,10 @@ void Graph::setStops(vector<Stop> &stops)
 {
     this->stops = stops;
 }
+
+vector<Stop>&  Graph::getStops(){
+    return this->stops;
+}
 int Graph::getStopIndex(string &code)
 {
     for (int i = 0; i < stops.size(); i++)

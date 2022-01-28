@@ -7,10 +7,12 @@ int main()
 
     string file_stops = "../dataset/stops.csv";
     string file_lines = "../dataset/lines.csv";
+    unordered_set<string> toExclude ;
+    toExclude.insert("1");
 
     net.readStops(file_stops);
     //cout << "Just Read Stops!! \n";
-    net.readLines(file_lines);
+    net.readLines(file_lines,toExclude);
     //cout << "Just Read Lines!! \n";
     string stop;
     cin >> stop;

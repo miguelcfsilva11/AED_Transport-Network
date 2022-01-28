@@ -48,6 +48,10 @@ distância; implica menos mudanças de autocarro (de linha); fica mais barato (p
 - “Mudar” de autocarro : para além de mudar de autocarro numa paragem, deve também ser possível
 caminhar um pouco para uma outra paragem “vizinha” (que esteja a menos do que uma certa distância).
 
+
+
+
+
 ## Açucar de Trabalho
 Implementar minimum spanning trees.
 filtro no inicio dos dados iniciais.

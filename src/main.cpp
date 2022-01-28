@@ -1,9 +1,13 @@
 #include "transport_network.h"
+#include "menu.h"
 
 int main()
 {
     TransportNetwork net = TransportNetwork();
 
+    Menu menu = Menu();
+    
+    
     string file_stops = "../dataset/stops.csv";
     string file_lines = "../dataset/lines.csv";
     unordered_set<string> toExclude;

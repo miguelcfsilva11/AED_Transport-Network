@@ -14,8 +14,6 @@ class TransportNetwork
 private:
 
     Graph* g;
-public:
-    vector<Stop> stops;
 
 public:
 
@@ -24,7 +22,7 @@ public:
     void readStops(string& filename);
     void readLines(string& filename);
     void readLine(string& filename ,string& code);
-    Graph * getGraph() ;
+    int findStop(string& code) {return 0;};
 
     float distanceFunc (string& code1, string& code2) {return 0;};
 

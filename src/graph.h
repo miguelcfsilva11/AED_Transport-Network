@@ -41,6 +41,7 @@ public:
 
     // ----- Functions to implement in this class -----
     int prim(int v);
+    vector<int> primPath(int v);
     int kruskal();
 
     void BFS(int startingNode);
@@ -48,8 +49,11 @@ public:
     void setStops(vector<Stop>& stop);
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
+
     
 };
 
 
 #endif
+
+

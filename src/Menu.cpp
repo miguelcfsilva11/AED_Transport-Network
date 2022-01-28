@@ -1,4 +1,3 @@
-
 #include "Menu.h"
 
 
@@ -13,19 +12,27 @@ choosingWay Menu::printMenu()
 {
 
     choosingWay CW;
-    int decision;
+    int decision = -1;
+    while (decision != 1 & decision != 2)
+    {
+    
+        for (int i = 0; i < 50; i++)
+        {
+            cout << '\n';
+        }
+        cout<<decision<<endl;
+        std::cout << "   Menu   \n" << std::endl;
+        std::cout << "0 - Instruções" << std::endl;
+        std::cout << "1 - Escolher percurso " << std::endl;
+        std::cout << "2 - Quit" << std::endl;
 
-    std::cout << "   Menu   \n" << std::endl;
-    std::cout << "0 - Instruções" << std::endl;
-    std::cout << "1 - Escolher percurso " << std::endl;
-    std::cout << "2 - Quit" << std::endl;
+        std::cin >> decision;
+        
+        if (decision == 0)
+            showInfo();
+    }
 
-    std::cin >> decision;
-
-    if (decision == 0)
-        showInfo();
-
-    else if (decision == 1)
+    if (decision == 1)
     {
         CW = chooseWay();
     }
@@ -38,7 +45,15 @@ choosingWay Menu::printMenu()
 void Menu::showInfo()
 {
 
-    std::cout << "Blablabla" << std::endl;
+    string key;
+
+    for (int i = 0; i < 50; i++)
+    {
+        cout << '\n';
+    }
+
+    std::cout << "Continue: ";
+    cin >> key;
 
 };
 

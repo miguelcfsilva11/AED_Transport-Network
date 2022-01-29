@@ -6,7 +6,7 @@ int main()
 
     TransportNetwork net = TransportNetwork();
 
-    // Menu menu = Menu();
+    //Menu menu = Menu();
     
     
     string file_stops = "../dataset/stops.csv";
@@ -22,6 +22,11 @@ int main()
     cin >> stop2;
     int stop1_index = net.getGraph()->getStopIndex(stop1);
     int stop2_index = net.getGraph()->getStopIndex(stop2);
+
+    for (auto line : net.getGraph()->getStops()[stop1_index].lines)
+    {
+        cout << line << endl;
+    }
     
     auto g = net.getGraph();
     if (stop1_index != -1 && stop2_index != -1)
@@ -35,8 +40,22 @@ int main()
     
         }
         */
-        cout << "Resultado dijkstra : " << g->dijkstraDistance(stop1_index,stop2_index) << endl;
 
+        float cost, min_cost = INT_MAX/2;
+        for (auto line: g->getStops()[stop1_index].lines)
+        {
+            cost = g->minLinesDistance(stop1_index,stop2_index, line);
+            if (cost < min_cost)
+                min_cost = cost;
+        }
+
+
+        for(int i = 0 ; i < 50; i++)
+        {
+            cout << '\n';
+        }
+
+        cout << cost << endl;
     }
 
 

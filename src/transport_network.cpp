@@ -117,7 +117,7 @@ void TransportNetwork::readLine(string &line_filename, string &line_code)
         GeoPoint g1 = {g->getStops()[current_stop_index].latitude,g->getStops()[current_stop_index].longitude};
         GeoPoint g2 = {g->getStops()[next_stop_index].latitude,g->getStops()[next_stop_index].longitude};
         float distance  = calculateDistance(g1,g2);
-        g->addEdge(current_stop_index, next_stop_index,distance);
+        g->addEdge(current_stop_index, next_stop_index, distance, line_code);
 
         // Arrived
         current_stop = next_stop;

@@ -20,6 +20,8 @@ class Graph {
         int dest;   //Destination node
         float weight; //An integer weight
         bool byFoot;
+
+        string line;
     };
 
     struct Node {
@@ -38,7 +40,7 @@ public:
     Graph(int nodes, bool dir = false);
 
     // Add edge from source to destination with a certain weight
-    void addEdge(int src, int dest, float weight = 1);
+    void addEdge(int src, int dest, float weight, string& line);
 
     // ----- Functions to implement in this class -----
     int prim(int v);
@@ -50,7 +52,8 @@ public:
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
     float dijkstraDistance(int partida, int chegada);
-    pair<list<int>, float> minLinesPath(int v, int k);
+    float minLinesDistance(int partida, int chegada, string line);
+    float minZonesDistance(int partida, int chegada);
 };
 
 

@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include "distance_calculator.h"
 class TransportNetwork
 {
 
@@ -25,8 +25,6 @@ public:
     void readLines(string& filename,unordered_set<string> toExclude);
     void readLine(string& filename ,string& code);
     Graph * getGraph() ;
-
-    float distanceFunc (string& code1, string& code2);
 
 };
 

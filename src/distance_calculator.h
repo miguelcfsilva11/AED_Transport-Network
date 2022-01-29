@@ -7,4 +7,4 @@ struct GeoPoint{
 };
 
 
-float distanceFunc(GeoPoint g1,GeoPoint g2);
+float calculateDistance(GeoPoint g1,GeoPoint g2);

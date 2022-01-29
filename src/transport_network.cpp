@@ -114,7 +114,10 @@ void TransportNetwork::readLine(string &line_filename, string &line_code)
 
         next_stop_index = g->getStopIndex(next_stop);
         g->getStops().at(next_stop_index).lines.insert(line_code);
-        g->addEdge(current_stop_index, next_stop_index, distanceFunc(current_stop, next_stop));
+        GeoPoint g1 = {g->getStops()[current_stop_index].latitude,g->getStops()[current_stop_index].longitude};
+        GeoPoint g2 = {g->getStops()[next_stop_index].latitude,g->getStops()[next_stop_index].longitude};
+        float distance  = calculateDistance(g1,g2);
+        g->addEdge(current_stop_index, next_stop_index,distance);
 
         // Arrived
         current_stop = next_stop;
@@ -130,23 +133,5 @@ Graph *TransportNetwork::getGraph()
 TransportNetwork::~TransportNetwork()
 {
     delete g;
-    cout << "No more memory leaks";
-}
-
-float TransportNetwork::distanceFunc(string &code1, string &code2)
-{
-    int a, b;
-    float lat1, lat2, long1, long2, distance;
-
-    a = g->getStopIndex(code1);
-    b = g->getStopIndex(code2);
-    lat1 =  g->getStops()[a].latitude;
-    long1 = g->getStops()[a].longitude;
-    lat2 =  g->getStops()[b].latitude;
-    long2 = g->getStops()[b].longitude;
-
-    distance = 2*6371* asin(sqrt(pow(sin((lat2 - lat1) / 2), 2) + cos(lat1)* cos(lat2) *pow(sin((long2 - long1) / 2), 2)));
-    if (distance < 0 )
-        cout << "Oh NO !!!!!\n";
-    return distance;
+    cout << "No more memory leaks hopefully " << endl;
 }

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "distance_calculator.h"
 
+
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num + 1)
 {
@@ -141,7 +142,7 @@ float Graph::dijkstraDistance(int origin, int chegada)
     cout << stops[chegada].code << endl;
     GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
     GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
-    cout << "Distancia fisica entre as duas paragens : "<< distanceFunc(originG,destinG) << endl;
+    cout << "Distancia fisica entre as duas paragens : "<< calculateDistance(originG,destinG) << endl;
 
     // Nodes that have been visited
     unordered_set<int> visitados;

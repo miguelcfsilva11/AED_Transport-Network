@@ -44,7 +44,7 @@ int main()
         float cost, min_cost = INT_MAX/2;
         for (auto line: g->getStops()[stop1_index].lines)
         {
-            cost = g->minLinesDistance(stop1_index,stop2_index, line);
+            cost = g->minLinesDistance(stop1_index,stop2_index, line).second;
             if (cost < min_cost)
                 min_cost = cost;
         }

@@ -136,7 +136,7 @@ vector<int> Graph::primPath(int v)
     return caminhos;
 }
 */
-float Graph::dijkstraDistance(int origin, int chegada)
+pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 {
     cout << "Ir de  " << stops[origin].code << " Até : ";
     cout << stops[chegada].code << endl;
@@ -204,11 +204,11 @@ float Graph::dijkstraDistance(int origin, int chegada)
     }
     cout << endl;
 
-    return node_distance_from_origin[chegada];
+    return make_pair(caminho, node_distance_from_origin[chegada]);
 }
 
 
-float Graph::minLinesDistance(int origin, int chegada, string currLine)
+pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string currLine)
 {
     cout << "Ir de  " << stops[origin].code << " Até : ";
     cout << stops[chegada].code << endl;
@@ -306,10 +306,10 @@ float Graph::minLinesDistance(int origin, int chegada, string currLine)
     }
     cout << endl;
 
-    return totalCost;
+    return make_pair(caminho, totalCost);
 }
 
-float Graph::minZonesDistance(int origin, int chegada)
+pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
 {
     cout << "Ir de  " << stops[origin].code << " Até : ";
     cout << stops[chegada].code << endl;
@@ -389,7 +389,7 @@ float Graph::minZonesDistance(int origin, int chegada)
     }
     cout << endl;
 
-    return node_distance_from_origin[chegada];
+    return make_pair(caminho, node_distance_from_origin[chegada]);
 }
 
 

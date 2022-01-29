@@ -51,9 +51,9 @@ public:
     void setStops(vector<Stop>& stop);
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
-    float dijkstraDistance(int partida, int chegada);
-    float minLinesDistance(int partida, int chegada, string line);
-    float minZonesDistance(int partida, int chegada);
+    pair<list<int>, float> dijkstraDistance(int partida, int chegada);
+    pair<list<int>, float> minLinesDistance(int partida, int chegada, string line);
+    pair<list<int>, float> minZonesDistance(int partida, int chegada);
 };
 
 

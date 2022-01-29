@@ -4,6 +4,7 @@
 #include "graph.h"
 #include <queue>
 #include <algorithm>
+#include "distance_calculator.h"
 
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num + 1)
@@ -138,13 +139,16 @@ float Graph::dijkstraDistance(int origin, int chegada)
 {
     cout << "Ir de  " << stops[origin].code << " Até : ";
     cout << stops[chegada].code << endl;
+    GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
+    GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
+    cout << "Distancia fisica entre as duas paragens : "<< distanceFunc(originG,destinG) << endl;
 
-    vector<int> caminhos;
     // Nodes that have been visited
     unordered_set<int> visitados;
 
     MinHeap<int, float> sorted_distances(n, n);
     unordered_map<int, float> node_distance_from_origin;
+    unordered_map<int, int> anteriores;
 
     int MAX_DISTANCE = INT32_MAX;
     // Set all nodes at max Distance
@@ -162,6 +166,7 @@ float Graph::dijkstraDistance(int origin, int chegada)
 
     // Encontrar o caminho mais curto preciso de precorrer todos os nos
     int current;
+    anteriores[current] =current;
     while (visitados.size() != n)
     {
         // Choose best node  in first iteration we force the starting node
@@ -175,10 +180,28 @@ float Graph::dijkstraDistance(int origin, int chegada)
             {
                 node_distance_from_origin[e.dest] = node_distance_from_origin[current] + e.weight;
                 sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current] + e.weight);
+                anteriores[e.dest] = current;
+            
+                
             }
         }
     }
 
+    list<int> caminho;
+    int paragem_anterior;
+    int paragem_corrente= chegada; 
+    caminho.push_front(paragem_corrente);
+    do{
+        paragem_anterior = anteriores[paragem_corrente];
+        caminho.push_front(paragem_anterior);
+        paragem_corrente = paragem_anterior;
+        
+    }while(paragem_corrente != origin);
+    
+    for (int paragem : caminho){
+        cout << stops[paragem].code <<  "-> ";
+    }
+    cout << endl;
 
     return node_distance_from_origin[chegada];
 }

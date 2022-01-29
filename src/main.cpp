@@ -1,11 +1,12 @@
 #include "transport_network.h"
-#include "menu.h"
+#include "Menu.h"
 
 int main()
 {
+
     TransportNetwork net = TransportNetwork();
 
-    Menu menu = Menu();
+    // Menu menu = Menu();
     
     
     string file_stops = "../dataset/stops.csv";
@@ -34,7 +35,7 @@ int main()
     
         }
         */
-        cout << g->dijkstraDistance(stop1_index,stop2_index);
+        cout << "Resultado dijkstra : " << g->dijkstraDistance(stop1_index,stop2_index) << endl;
 
     }
 

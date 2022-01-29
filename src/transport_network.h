@@ -14,8 +14,6 @@ class TransportNetwork
 private:
 
     Graph* g;
-public:
-    vector<Stop> stops;
 
 public:
 

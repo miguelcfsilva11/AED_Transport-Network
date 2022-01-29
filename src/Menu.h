@@ -2,9 +2,12 @@
 #ifndef MENU_H
 #define MENU_H
 
+
+#include "transport_network.h"
+
 #include <iostream>
 #include <fstream>
-#include <vector>
+#include <unordered_set>
 #include <string>
 #include <set>
 
@@ -15,7 +18,7 @@ struct choosingWay
     int howToChooseRoute;
     bool goOnFoot;
     int metresToWalk;
-    vector<string> hiddenLines;
+    unordered_set<string> hiddenLines;
     float startLat =0.0, endLat=0.0, startLong=0.0, endLong=0.0;
     string startStop=" ", endStop =" ";
 
@@ -28,14 +31,20 @@ class Menu
 {
 
 private:
+
     void showInfo();
-    choosingWay chooseWay();
+    void chooseWay();
+    TransportNetwork net;
+    choosingWay CW;
 
 
 
 public:
-    choosingWay printMenu();
+    
     Menu();
+    void execute();
+    void cleanScreen();
+    int printMenu();
 
 };
 

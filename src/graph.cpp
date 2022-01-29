@@ -36,9 +36,6 @@ int Graph::getStopIndex(string &code)
     for (int i = 0; i < stops.size(); i++)
         if (stops[i].code == code)
             return i;
-
-    cout << "Trying to Find " << code << " That code does not exist!!\n";
-
     return -1;
 }
 
@@ -138,11 +135,9 @@ vector<int> Graph::primPath(int v)
 */
 pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 {
-    cout << "Ir de  " << stops[origin].code << " Até : ";
-    cout << stops[chegada].code << endl;
+
     GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
     GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
-    cout << "Distancia fisica entre as duas paragens : "<< calculateDistance(originG,destinG) << endl;
 
     // Nodes that have been visited
     unordered_set<int> visitados;
@@ -199,10 +194,6 @@ pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
         
     }while(paragem_corrente != origin);
     
-    for (int paragem : caminho){
-        cout << stops[paragem].code <<  "-> ";
-    }
-    cout << endl;
 
     return make_pair(caminho, node_distance_from_origin[chegada]);
 }
@@ -210,11 +201,9 @@ pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 
 pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string currLine)
 {
-    cout << "Ir de  " << stops[origin].code << " Até : ";
-    cout << stops[chegada].code << endl;
+
     GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
     GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
-    cout << "Distancia fisica entre as duas paragens : "<< calculateDistance(originG,destinG) << endl;
 
     // Nodes that have been visited
     unordered_set<int> visitados;
@@ -297,25 +286,17 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
         totalCost += calculateDistance(g1, g2);
         paragem_corrente = paragem_anterior;
 
-        cout << node_distance_from_origin[paragem_corrente] << endl;
         
     }while(paragem_corrente != origin);
-    
-    for (int paragem : caminho){
-        cout << stops[paragem].code <<  "-> ";
-    }
-    cout << endl;
 
     return make_pair(caminho, totalCost);
 }
 
 pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
 {
-    cout << "Ir de  " << stops[origin].code << " Até : ";
-    cout << stops[chegada].code << endl;
+
     GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
     GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
-    cout << "Distancia fisica entre as duas paragens : "<< calculateDistance(originG,destinG) << endl;
 
     // Nodes that have been visited
     unordered_set<int> visitados;
@@ -384,11 +365,6 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
         
     }while(paragem_corrente != origin);
     
-    for (int paragem : caminho){
-        cout << stops[paragem].code << ";" << stops[paragem].zone << "-> ";
-    }
-    cout << endl;
-
     return make_pair(caminho, node_distance_from_origin[chegada]);
 }
 

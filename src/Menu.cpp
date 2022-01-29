@@ -8,12 +8,13 @@ Menu::Menu()
 
 void Menu::execute()
 {
+
     char key;
     string file_stops = "../dataset/stops.csv";
     string file_lines = "../dataset/lines.csv";
 
     net.readStops(file_stops);
-    net.readLines(file_lines, CW.hiddenLines);
+    net.readLines(file_lines, CW.hiddenLines, CW.nightTime);
 
 
     float cost = 0;
@@ -25,6 +26,18 @@ void Menu::execute()
 
     int stop1_index = g->getStopIndex(CW.startStop);
     int stop2_index = g->getStopIndex(CW.endStop);
+
+    if (stop1_index == -1 || stop2_index == -1)
+    {
+        cout << "Error: there is no stop with such code, please try again!" << endl;
+        cout << CW.startStop << endl;
+        cout << CW.endStop << endl;
+        
+        cout << "\n -> Continue: ";
+        cin >> key;
+        return;
+
+    }
 
     if (CW.howToChooseRoute == 0)
     {
@@ -200,19 +213,28 @@ void Menu::chooseWay()
     cleanScreen();
 
     std::cout<< "Está disposto a andar a pé para trocar de transporte?\n" << std::endl;
-    std::cout << "0 - Sim" << std::endl;
-    std::cout << "1 - Não \n -> ";
+    std::cout << "0 - Não" << std::endl;
+    std::cout << "1 - Sim \n -> ";
 
     std::cin >> decision;
 
-    if (decision == 0) {
+    if (decision == 1) {
         CW.goOnFoot = true;
         std::cout << "Quantos metros está disposto a andar a pé? \n -> ";
         std::cin >> CW.metresToWalk;
     }
-    else if (decision == 1)
-        CW.goOnFoot = false;
 
+    else if (decision == 0)
+        CW.goOnFoot = false;
+    
+    std::cout<< "Será uma viagem noturna? De madrugada?\n" << std::endl;
+    std::cout << "0 - Não" << std::endl;
+    std::cout << "1 - Sim \n -> ";
+
+    std::cin >> decision;
+
+    if (decision == 0) CW.nightTime = false;
+    else if (decision == 1) CW.nightTime = true;
 
     cleanScreen();
 

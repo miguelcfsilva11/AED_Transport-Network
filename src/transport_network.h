@@ -20,7 +20,7 @@ public:
     TransportNetwork();
     ~TransportNetwork();
     void readStops(string& filename);
-    void readLines(string& filename,unordered_set<string> toExclude);
+    void readLines(string& filename,unordered_set<string> toExclude, bool nightTime);
     void readLine(string& filename ,string& code);
     Graph * getGraph() ;
 

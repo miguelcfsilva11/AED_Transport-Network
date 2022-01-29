@@ -38,7 +38,7 @@ void TransportNetwork::readStops(string &filename)
 
 }
 
-void TransportNetwork::readLines(std::string &filename, unordered_set<string> toExclude)
+void TransportNetwork::readLines(std::string &filename, unordered_set<string> toExclude, bool nightTime)
 {
 
 
@@ -47,6 +47,9 @@ void TransportNetwork::readLines(std::string &filename, unordered_set<string> to
     std::string dummy;
     std::string code;
     std::string name;
+
+    bool nocturnal = false;
+
     int number_of_lines_read = 0;
     int number_of_unique_lines = 0;
     getline(in, dummy);
@@ -56,18 +59,32 @@ void TransportNetwork::readLines(std::string &filename, unordered_set<string> to
         if (toExclude.find(code) != toExclude.end())
             continue;
 
+
         getline(in, name, in.widen('\n'));
+    
+        for (size_t i = 0; i < code.size(); i++)
+        {
+            if (code[i] == 'M')
+            {
+                nocturnal = true;
+            }
+        }
 
         string line_filename_0 = "../dataset/line_" + code + "_0.csv";
         string line_filename_1 = "../dataset/line_" + code + "_1.csv";
 
-        readLine(line_filename_0, code);
-        readLine(line_filename_1, code);
+        if (nightTime == nocturnal)
+        {
 
-        number_of_lines_read += 2;
-        number_of_unique_lines++;
+            readLine(line_filename_0, code);
+            readLine(line_filename_1, code);
+
+            number_of_lines_read += 2;
+            number_of_unique_lines++;
+        }   
+
+        nocturnal = false;
     }
-
 }
 
 void TransportNetwork::readLine(string &line_filename, string &line_code)
@@ -100,7 +117,7 @@ void TransportNetwork::readLine(string &line_filename, string &line_code)
         GeoPoint g2 = {g->getStops()[next_stop_index].latitude,g->getStops()[next_stop_index].longitude};
         float distance  = calculateDistance(g1,g2);
 
-        g->addEdge(current_stop_index, next_stop_index, distance, line_code);
+        g->addEdge(current_stop_index, next_stop_index, distance, line_filename);
         current_stop = next_stop;
         current_stop_index = next_stop_index;
     }

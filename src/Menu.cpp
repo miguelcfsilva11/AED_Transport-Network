@@ -54,9 +54,9 @@ void Menu::execute()
         cout << '\n';
     }
 
-    cout << "According to your preferences, the shortest route  that takes you from / to:\n -> "
+    cout << "According to your preferences, the shortest route that takes you from / to:\n\n -> "
          << g->getStops()[stop1_index].name << "\n -> " << g->getStops()[stop2_index].name
-         << "\n is the following:" << endl;
+         << "\n\n is the following:\n" << endl;
 
     list<int> chosenPath = shortestPathCost.first;
     float chosenCost = shortestPathCost.second;
@@ -72,7 +72,7 @@ void Menu::execute()
             cout << "|" << endl;
     }
 
-    cout << "Continue: ";
+    cout << "\n -> Continue: ";
     cin >> key;
 
 }
@@ -111,7 +111,7 @@ int Menu::printMenu()
     {
         chooseWay();
     }
-    cout << decision << ": hey" << endl;
+
     return decision;
 
 };
@@ -142,7 +142,7 @@ void Menu::chooseWay()
 
     std::cout<< "Como quer escolher a localização onde se encontra?" << std::endl;
     std::cout<< "0 - Estação" << std::endl;
-    std::cout<< "1 - Latitude e longitude" << std::endl;
+    std::cout<< "1 - Latitude e longitude\n -> ";
 
     std::cin>> decision;
 
@@ -154,43 +154,43 @@ void Menu::chooseWay()
 
     if(decision == 0)
     {
-        std::cout<<"Qual o código da estação de onde vai partir?" << std::endl;
+        std::cout<<"Qual o código da estação de onde vai partir? \n -> ";
         std::cin >> CW.startStop;
 
 
     }
     else if (decision == 1)
     {
-        std::cout<<"Qual a latitude/longitude de onde vai partir?" << std::endl;
+        std::cout<<"Qual a latitude/longitude de onde vai partir? \n -> ";
         std::cin >> CW.startLat >> c >> CW.startLong;
     }
 
 
     cleanScreen();
 
-    std::cout<< "Como quer escolher a localização para onde vai?" << std::endl;
+    std::cout<< "Como quer escolher a localização para onde vai?\n" << std::endl;
     std::cout<< "0 - Estação" << std::endl;
-    std::cout<< "1 - Latitude e longitude" << std::endl;
+    std::cout<< "1 - Latitude e longitude \n -> ";
 
     std::cin>> decision;
 
     if(decision == 0)
     {
-        std::cout<<"Qual o código da estação para onde vai?" << std::endl;
+        std::cout<<"Qual o código da estação para onde vai? \n -> ";
         std::cin >> CW.endStop;
     }
     else if (decision == 1)
     {
-        std::cout<<"Qual a latitude/longitude do lugar para onde vai?" << std::endl;
+        std::cout<<"Qual a latitude/longitude do lugar para onde vai? \n -> ";
         std::cin >> CW.endLat >> c >> CW.endLong;
     }
 
     cleanScreen();
 
-    std::cout<< "Como prefere que o seu percurso seja escolhido?" << std::endl;
+    std::cout<< "Como prefere que o seu percurso seja escolhido?\n" << std::endl;
     std::cout << "0 - Trajeto mais curto" << std::endl;
     std::cout << "1 - Menor número de trocas de linha" << std::endl;
-    std::cout << "2 - Mais barato (menos mudanças de zona)" << std::endl;
+    std::cout << "2 - Mais barato (menos mudanças de zona) \n -> ";
 
     std::cin >> CW.howToChooseRoute;
 
@@ -199,15 +199,15 @@ void Menu::chooseWay()
 
     cleanScreen();
 
-    std::cout<< "Está disposto a andar  a pé para trocar de transporte?" << std::endl;
+    std::cout<< "Está disposto a andar a pé para trocar de transporte?\n" << std::endl;
     std::cout << "0 - Sim" << std::endl;
-    std::cout << "1 - Não" << std::endl;
+    std::cout << "1 - Não \n -> ";
 
     std::cin >> decision;
 
     if (decision == 0) {
         CW.goOnFoot = true;
-        std::cout << "Quantos metros está disposto a andar a pé?" << std::endl;
+        std::cout << "Quantos metros está disposto a andar a pé? \n -> ";
         std::cin >> CW.metresToWalk;
     }
     else if (decision == 1)
@@ -216,7 +216,9 @@ void Menu::chooseWay()
 
     cleanScreen();
 
-    std::cout<< "Quer suprimir alguma linha? Por favor escreva o código da linha que desejar suprimir.\n (se não quiser suprimeir nenhuma loinha escreva o código 0000)" << std::endl;
+    std::cout<< "Quer suprimir alguma linha? Por favor escreva o código da linha\n"
+             << "que desejar suprimir." 
+             << "(Se não quiser suprimeir nenhuma loinha escreva o código '0000') \n -> ";
     std::cin >> code;
 
     while(code != "0000")

@@ -17,9 +17,9 @@ void Graph::addEdge(int src, int dest, float weight, string& line)
 {
     if (src < 0 || src > n - 1 || dest < 0 || dest > n - 1)
         return;
-    nodes[src].adj.push_back({dest, weight,line});
+    nodes[src].adj.push_back({dest, weight, 0, line});
     if (!hasDir)
-        nodes[dest].adj.push_back({src, weight, line});
+        nodes[dest].adj.push_back({src, weight, 0, line});
 }
 
 void Graph::setStops(vector<Stop> &stops)
@@ -39,50 +39,28 @@ int Graph::getStopIndex(string &code)
     return -1;
 }
 
-pair<list<int>, int> Graph::BFS(int partida, int chegada)
+void Graph::BFS(int startingNode)
 {
     unordered_set<int> visitedNodes;
     queue<int> to_visitNodes;
-    to_visitNodes.push(partida);
-    visitedNodes.insert(partida);
-    
-    unordered_map<int, int> pred; 
-
+    to_visitNodes.push(startingNode);
+    visitedNodes.insert(startingNode);
     while (to_visitNodes.size())
     {
         int currentNode = to_visitNodes.front();
         to_visitNodes.pop();
+        cout << stops[currentNode].code << "->";
+        // cout << nodes[currentNode].adj.size();
 
         for (Edge g : nodes[currentNode].adj)
         {
             if (visitedNodes.find(g.dest) == visitedNodes.end())
             {
-                pred[g.dest] = currentNode;
                 to_visitNodes.push(g.dest);
                 visitedNodes.insert(g.dest);
             }
         }
     }
-
-
-    list<int> caminho;
-    int paragem_anterior;
-    int paragem_corrente= chegada; 
-    caminho.push_front(paragem_corrente);
-
-    int totalCost = 0;
-
-    do{
-        paragem_anterior = pred[paragem_corrente];
-        caminho.push_front(paragem_anterior);
-        paragem_corrente = paragem_anterior;
-        totalCost += 1;
-        
-    } while(paragem_corrente != partida);
-
-
-    return make_pair(caminho, totalCost);
-
 }
 
 void Graph::printAdjancies(int node)
@@ -93,57 +71,68 @@ void Graph::printAdjancies(int node)
         cout << stops[e.dest].code << ", ";
     }
 }
+/*
+int Graph::prim(int v)
+{
+    vector<Node> alreadySeen;
 
-pair<list<int>, float> Graph::primDistance(int partida, string zone) {
+    int totalWeight = 0;
+    int minWeight = INT32_MAX;
+    int d;
+    alreadySeen.push_back(nodes[0]);
 
-    std::priority_queue<Edge> p1;
-    Edge curr;
-    list<int> caminho;
-    int distance = 0;
-    int min = INT_MAX / 2;
-
-    for (Edge edge : nodes[partida].adj)
+    for (int j = 0; j < v; j++)
     {
-        if (stops[edge.dest].zone == zone)
-            p1.push(edge);
-    }
-
-    unordered_map<int, bool> visited;
-    for (int i = 1; i < nodes.size() + 1; i++)
-    {
-        if (i == partida)
-            visited[i] = true;
-        else
-            visited[i] = false;
-    }
-    caminho.push_back(partida);
-    
-    while (p1.size())
-    {
-        curr = p1.top();
-        p1.pop();
-        
-
-
-        if (!visited[curr.dest]) {
-            caminho.push_back(curr.dest);
-            for (Edge edge: nodes[curr.dest].adj) {
-                if (stops[curr.dest].zone == zone)
+        for (int i = 0; i < alreadySeen.size(); i++)
+        {
+            for (std::list<Edge>::const_iterator it = alreadySeen[i].adj.begin(); it != alreadySeen[i].adj.end(); it++)
+            {
+                if (it->weight <= minWeight && find(alreadySeen.begin(), alreadySeen.end(), nodes[it->dest]) == alreadySeen.end())
                 {
-                    p1.push(edge);
+                    minWeight = it->weight;
+                    d = it->dest;
                 }
             }
-
-
-            distance += curr.weight;
-            visited[curr.dest] = true;
         }
+        alreadySeen.push_back(nodes[d - 1]);
+        totalWeight = totalWeight + minWeight;
+        minWeight = INT32_MAX;
     }
 
-
-    return make_pair(caminho, distance);
+    return totalWeight;
 }
+vector<int> Graph::primPath(int v)
+{
+    vector<Node> alreadySeen;
+    vector<int> caminhos;
+    int totalWeight = 0;
+    int minWeight = INT32_MAX;
+    int d;
+    alreadySeen.push_back(nodes[0]);
 
+    n³
+    for (int j = 0; j < v; j++)
+    {
+        for (int i = 0; i < alreadySeen.size(); i++)
+        {
+            for (std::list<Edge>::const_iterator it = alreadySeen[i].adj.begin(); it != alreadySeen[i].adj.end(); it++)
+            {
+                if (it->weight <= minWeight && find(alreadySeen.begin(), alreadySeen.end(), nodes[it->dest]) == alreadySeen.end())
+                {
+                    minWeight = it->weight;
+                    d = it->dest;
+                }
+            }
+        }
+        alreadySeen.push_back(nodes[d - 1]);
+        caminhos.push_back(minWeight);
+        totalWeight = totalWeight + minWeight;
+        minWeight = INT32_MAX;
+    }
+
+    return caminhos;
+}
+*/
 pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 {
 

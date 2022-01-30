@@ -1,5 +1,3 @@
-// AED 2021/2022 - Aula Pratica 10
-// Pedro Ribeiro (DCC/FCUP) [09/01/2022]
 
 #include "graph.h"
 #include <queue>
@@ -7,12 +5,12 @@
 #include "distance_calculator.h"
 
 
-// Constructor: nr nodes and direction (default: undirected)
+
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num + 1)
 {
 }
 
-// Add edge from source to destination with a certain weight
+
 void Graph::addEdge(int src, int dest, float weight, string& line)
 {
     if (src < 0 || src > n - 1 || dest < 0 || dest > n - 1)
@@ -50,7 +48,7 @@ void Graph::BFS(int startingNode)
         int currentNode = to_visitNodes.front();
         to_visitNodes.pop();
         cout << stops[currentNode].code << "->";
-        // cout << nodes[currentNode].adj.size();
+
 
         for (Edge g : nodes[currentNode].adj)
         {
@@ -156,16 +154,16 @@ pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
         sorted_distances.insert(i, MAX_DISTANCE);
     }
 
-    // We star at the origin distance is 0
+
     node_distance_from_origin[origin] = 0;
     sorted_distances.decreaseKey(origin, 0);
 
-    // Encontrar o caminho mais curto preciso de precorrer todos os nos
+
     int current;
     anteriores[current] =current;
     while (visitados.size() != n)
     {
-        // Choose best node  in first iteration we force the starting node
+
         current = sorted_distances.removeMin();
         visitados.insert(current);
 
@@ -223,19 +221,19 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
         sorted_distances.insert(i, MAX_DISTANCE);
     }
 
-    // We star at the origin distance is 0
+
     node_distance_from_origin[origin] = 0;
     sorted_distances.decreaseKey(origin, 0);
 
     stopCurrLine[origin] = currLine;
 
-    // Encontrar o caminho mais curto preciso de precorrer todos os nos
+
     int current;
     bool found = false;
     anteriores[current] =current;
     while (visitados.size() != n)
     {
-        // Choose best node  in first iteration we force the starting node
+
         current = sorted_distances.removeMin();
         visitados.insert(current);
 
@@ -298,7 +296,7 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
     GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
     GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
 
-    // Nodes that have been visited
+
     unordered_set<int> visitados;
 
     MinHeap<int, float> sorted_distances(n, n);
@@ -315,16 +313,16 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
         sorted_distances.insert(i, MAX_DISTANCE);
     }
 
-    // We star at the origin distance is 0
+
     node_distance_from_origin[origin] = 0;
     sorted_distances.decreaseKey(origin, 0);
 
-    // Encontrar o caminho mais curto preciso de precorrer todos os nos
+
     int current;
     anteriores[current] =current;
     while (visitados.size() != n)
     {
-        // Choose best node  in first iteration we force the starting node
+
         current = sorted_distances.removeMin();
         visitados.insert(current);
 

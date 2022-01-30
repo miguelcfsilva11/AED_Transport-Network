@@ -4,6 +4,9 @@
 #include <string>
 #include <unordered_set>
 
+/**
+ * Struct to store the stops' code, name, zone, latitude, longitude and lines
+ */
 struct Stop{
 
     std::string code;

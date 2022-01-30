@@ -1,5 +1,6 @@
 #include "transport_network.h"
 #include <math.h>
+
 TransportNetwork::TransportNetwork()
 {
     g = nullptr;

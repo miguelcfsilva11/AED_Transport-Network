@@ -17,6 +17,7 @@ void Menu::execute()
     net.readLines(file_lines, CW.hiddenLines, CW.nightTime);
 
 
+
     float cost = 0;
     float min_cost = INT_MAX/2;
 
@@ -64,8 +65,9 @@ void Menu::execute()
 
     }
 
-    else
+    else if(CW.howToChooseRoute == 2)
         shortestPathCost = g->minZonesDistance(stop1_index, stop2_index);
+    else shortestPathCost = g->BFS(stop1_index, stop2_index);
 
     for (int i = 0; i < 50; i++)
     {
@@ -104,12 +106,76 @@ void Menu::cleanScreen()
 }
 
 
+void Menu::printMST()
+{
+    cout << "ENtered function "<< endl;
+    string zone, stopCode;
+    char key;
+
+    string file_stops = "../dataset/stops.csv";
+    string file_lines = "../dataset/lines.csv";
+
+
+    net.readStops(file_stops);
+    net.readLines(file_lines, CW.hiddenLines, CW.nightTime);
+
+    cleanScreen();
+
+    std::cout<< "Qual o nome da zona que deseja percorrer?\n -> ";
+    std::cin >> zone;
+
+    std::cout<< "A partir de que paragem?\n -> ";
+    std::cin >> stopCode;
+    Graph* g = net.getGraph();
+
+    if (g->getStopIndex(stopCode) == -1)
+    {
+        std::cout<< "Paragem inválida:\n -> ";
+        std::cin >> key;
+        return;
+    }
+
+    if(g->getStops().at(g->getStopIndex(stopCode)).zone != zone)
+    {
+        std::cout<< "A zona nao corresponde à paragem:\n -> ";
+        std::cin >> key;
+        return;
+    }
+
+    pair<list<int>, float> primPathCost = g->primDistance(g->getStopIndex(stopCode), zone);
+    
+    cleanScreen();
+
+    cout << "According to your preferences, the shortest route to traverse the zone / from:\n\n -> "
+        << zone << "\n -> " << g->getStops()[g->getStopIndex(stopCode)].name
+        << "\n\n is the following:\n" << endl;
+
+    list<int> chosenPath = primPathCost.first;
+    float chosenCost = primPathCost.second;
+
+
+    auto it = chosenPath.begin();
+
+    while (it != chosenPath.end())
+    {
+        cout << g->getStops().at(*it).code << ": " << g->getStops().at(*it).name << endl;
+        it++;
+
+        if (it != chosenPath.end())
+            cout << "|" << endl;
+    }
+
+    cout << "\n -> Continue: ";
+    cin >> key;
+
+}
+
 int Menu::printMenu()
 {
 
     int decision = -1;
 
-    while (decision != 1 & decision != 2)
+    while (decision != 1 & decision != 2 && decision != 3)
     {
     
         cleanScreen();
@@ -117,7 +183,8 @@ int Menu::printMenu()
         std::cout << "   Menu   \n" << std::endl;
         std::cout << "0 - Instruções" << std::endl;
         std::cout << "1 - Escolher percurso " << std::endl;
-        std::cout << "2 - Quit" << std::endl;
+        std::cout << "2 - Escolher MST " << std::endl;
+        std::cout << "3 - Quit" << std::endl;
 
         std::cin >> decision;
         
@@ -128,6 +195,10 @@ int Menu::printMenu()
     if (decision == 1)
     {
         chooseWay();
+    }
+    if (decision == 2)
+    {
+        printMST();
     }
 
     return decision;
@@ -214,11 +285,13 @@ void Menu::chooseWay()
     std::cout<< "Como prefere que o seu percurso seja escolhido?\n" << std::endl;
     std::cout << "0 - Trajeto mais curto" << std::endl;
     std::cout << "1 - Menor número de trocas de linha" << std::endl;
-    std::cout << "2 - Mais barato (menos mudanças de zona) \n -> ";
+    std::cout << "2 - Mais barato (menos mudanças de zona)" << std::endl;
+    std::cout << "3 - Menor número de paragens \n -> ";
 
     std::cin >> CW.howToChooseRoute;
 
-    while (CW.howToChooseRoute != 0 && CW.howToChooseRoute != 2 && CW.howToChooseRoute != 1)
+    while (CW.howToChooseRoute != 0 && CW.howToChooseRoute
+                != 2 && CW.howToChooseRoute != 1 && CW.howToChooseRoute != 3) 
         std::cin >> CW.howToChooseRoute;
 
     cleanScreen();

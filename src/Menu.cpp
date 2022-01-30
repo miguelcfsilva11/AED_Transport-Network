@@ -158,7 +158,8 @@ void Menu::printMST()
 
     while (it != chosenPath.end())
     {
-        cout << g->getStops().at(*it).code << ": " << g->getStops().at(*it).name << endl;
+        cout << g->getStops().at(*it).code << ": " << g->getStops().at(*it).name<< "\n";
+
         it++;
 
         if (it != chosenPath.end())

@@ -146,18 +146,14 @@ pair<list<int>, float> Graph::primDistance(int partida, string zone) {
         curr = p1.top();
         p1.pop();
         
-
-
         if (!visited[curr.dest]) {
             caminho.push_back(curr.dest);
             for (Edge edge: nodes[curr.dest].adj) {
-                if (stops[curr.dest].zone == zone)
+                if (stops[edge.dest].zone == zone)
                 {
                     p1.push(edge);
                 }
             }
-
-
             distance += curr.weight;
             visited[curr.dest] = true;
         }

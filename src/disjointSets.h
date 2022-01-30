@@ -1,13 +1,19 @@
-// AED 2021/2022 - Aula Pratica 10
-// Pedro Ribeiro (DCC/FCUP) [09/01/2022]
 
 #ifndef _DISJOINTSETS_H_
 #define _DISJOINTSETS_H_
 
 #include <unordered_map>
 
+/**
+ * Class to store information about disjoint sets
+ * @tparam T a template type
+ */
 template <class T>
 class DisjointSets {
+
+    /**
+     * Struct to store information about nodes
+     */
     struct Node {
         T parent;
         int myrank; // to use on union by rank
@@ -16,26 +22,42 @@ class DisjointSets {
     unordered_map<T, Node> a;
 
 public:
-    void makeSet(const T& x);            // Create a set with a single element x
-    T find(const T& x);                  // Find the representative of the set of element x
-    void unite(const T& x, const T& y);  // Merge the sets of elements x and y
+
+    /**
+     * Function to create a set with a single element x
+     * @param x the element
+     */
+    void makeSet(const T& x);
+
+    /**
+     * Function that finds the representative of the set of element x
+     * @param x the element
+     * @return returns the representative of the set of element x
+     */
+    T find(const T& x);
+
+    /**
+     * Function to merge the sets of elements x and y
+     * @param x one of the elements
+     * @param y one of the elements
+     */
+    void unite(const T& x, const T& y);
 
 };
 
-// Create a set with a single element x
+
+
 template <class T>
 void DisjointSets<T>::makeSet(const T& x) {
     a[x].parent = x;
 }
 
-// Find the representative of the set of element x
 template <class T>
 T DisjointSets<T>::find(const T& x) {
     if (a[x].parent == x) return x;
     else return find(a[x].parent);
 }
 
-// Merge the sets of elements x and y
 template <class T>
 void DisjointSets<T>::unite(const T& x, const T& y) {
     T xRoot = find(x);

@@ -96,7 +96,7 @@ void Menu::execute()
     cout << "\n -> Continue: ";
     cin >> key;
 
-}
+};
 
 void Menu::cleanScreen()
 {

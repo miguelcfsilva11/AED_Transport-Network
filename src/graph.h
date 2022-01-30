@@ -17,11 +17,16 @@ using namespace std;
 class Graph {
     
     struct Edge {
+
         int dest;   //Destination node
         float weight; //An integer weight
-        bool byFoot;
-
         string line;
+
+        bool operator<(const Edge& edge) const
+        {
+            return weight > edge.weight;
+        }
+
     };
 
     struct Node {
@@ -46,17 +51,20 @@ public:
     int prim(int v);
     vector<int> primPath(int v);
     int kruskal();
-    void BFS(int startingNode);
+
     vector<Stop>& getStops();
     void setStops(vector<Stop>& stop);
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
+
+    pair<list<int>, int> BFS(int partida, int chegada);
+    pair<list<int>, float> primDistance(int partida, string zone);
     pair<list<int>, float> dijkstraDistance(int partida, int chegada);
     pair<list<int>, float> minLinesDistance(int partida, int chegada, string line);
     pair<list<int>, float> minZonesDistance(int partida, int chegada);
+
+
 };
 
 
 #endif
-
-

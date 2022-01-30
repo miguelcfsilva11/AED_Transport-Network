@@ -17,27 +17,15 @@ void Menu::execute()
     net.readLines(file_lines, CW.hiddenLines, CW.nightTime);
 
 
-
     float cost = 0;
     float min_cost = INT_MAX/2;
 
     pair<list<int>, float> shortestPathCost;
 
     Graph* g = net.getGraph();
-    string x = "CORD4";
-    list<int> k = g->primDistance(g->getStopIndex(x), "PRT1").first;
+
     int stop1_index = g->getStopIndex(CW.startStop);
     int stop2_index = g->getStopIndex(CW.endStop);
-
-    auto it2 = k.begin();
-    while (it2 != k.end())
-    {
-        cout << g->getStops().at(*it2).code << ": " << g->getStops().at(*it2).name << endl;
-        it2++;
-
-        if (it2 != k.end())
-            cout << "|" << endl;
-    }
 
     if (stop1_index == -1 || stop2_index == -1)
     {
@@ -71,9 +59,8 @@ void Menu::execute()
 
     }
 
-    else if(CW.howToChooseRoute == 2)
+    else
         shortestPathCost = g->minZonesDistance(stop1_index, stop2_index);
-    else shortestPathCost = g->BFS(stop1_index, stop2_index);
 
     for (int i = 0; i < 50; i++)
     {
@@ -216,13 +203,11 @@ void Menu::chooseWay()
     std::cout<< "Como prefere que o seu percurso seja escolhido?\n" << std::endl;
     std::cout << "0 - Trajeto mais curto" << std::endl;
     std::cout << "1 - Menor número de trocas de linha" << std::endl;
-    std::cout << "2 - Mais barato (menos mudanças de zona)" << std::endl;
-    std::cout << "3 - Menor número de paragens \n -> ";
+    std::cout << "2 - Mais barato (menos mudanças de zona) \n -> ";
 
     std::cin >> CW.howToChooseRoute;
 
-    while (CW.howToChooseRoute != 0 && CW.howToChooseRoute
-                != 2 && CW.howToChooseRoute != 1 && CW.howToChooseRoute != 3) 
+    while (CW.howToChooseRoute != 0 && CW.howToChooseRoute != 2 && CW.howToChooseRoute != 1)
         std::cin >> CW.howToChooseRoute;
 
     cleanScreen();

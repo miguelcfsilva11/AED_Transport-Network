@@ -67,6 +67,7 @@ void Menu::execute()
 
     else if(CW.howToChooseRoute == 2)
         shortestPathCost = g->minZonesDistance(stop1_index, stop2_index);
+    
     else shortestPathCost = g->BFS(stop1_index, stop2_index);
 
     for (int i = 0; i < 50; i++)
@@ -166,7 +167,7 @@ void Menu::printMST()
             cout << "|" << endl;
     }
 
-    cout << "\n -> Continue: ";
+    cout << "\n -> Exit:  ";
     cin >> key;
 
 }
@@ -266,19 +267,12 @@ void Menu::chooseWay()
 
     std::cout<< "Como quer escolher a localização para onde vai?\n" << std::endl;
     std::cout<< "0 - Estação" << std::endl;
-    std::cout<< "1 - Latitude e longitude \n -> ";
-
     std::cin>> decision;
 
     if(decision == 0)
     {
         std::cout<<"Qual o código da estação para onde vai? \n -> ";
         std::cin >> CW.endStop;
-    }
-    else if (decision == 1)
-    {
-        std::cout<<"Qual a latitude/longitude do lugar para onde vai? \n -> ";
-        std::cin >> CW.endLat >> c >> CW.endLong;
     }
 
     cleanScreen();
@@ -334,6 +328,4 @@ void Menu::chooseWay()
         std::cin>>code;
 
     }
-
-
 };

@@ -5,7 +5,7 @@ int main()
 {
     Menu menu = Menu();
     int chosenOption = menu.printMenu();
-    while (chosenOption == 1)
+    while (chosenOption ==1)
     {
         menu.execute();
         chosenOption = menu.printMenu();

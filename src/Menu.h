@@ -18,7 +18,7 @@ struct choosingWay
     int howToChooseRoute;
     bool goOnFoot;
     bool nightTime;
-    int metresToWalk;
+    float metresToWalk;
     unordered_set<string> hiddenLines;
     float startLat =0.0, endLat=0.0, startLong=0.0, endLong=0.0;
     string startStop=" ", endStop =" ";

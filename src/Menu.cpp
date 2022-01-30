@@ -23,6 +23,10 @@ void Menu::execute()
     pair<list<int>, float> shortestPathCost;
 
     Graph* g = net.getGraph();
+    if(CW.startStop == " "){
+        g->addYourLocation(CW.startLat,CW.startLong,CW.metresToWalk);
+        CW.startStop = "Your Location";
+    }
 
     int stop1_index = g->getStopIndex(CW.startStop);
     int stop2_index = g->getStopIndex(CW.endStop);
@@ -30,15 +34,16 @@ void Menu::execute()
     if (stop1_index == -1 || stop2_index == -1)
     {
         cout << "Error: there is no stop with such code, please try again!" << endl;
-        cout << CW.startStop << endl;
-        cout << CW.endStop << endl;
-        
+        if( stop2_index == -1){
+            cout << "Missing Stop: "<< CW.endStop << endl;
+        }
+        if (stop1_index == -1) cout << "Missing Stop: " <<  CW.startStop << endl;
+            
         cout << "\n -> Continue: ";
         cin >> key;
         return;
 
     }
-
     if (CW.howToChooseRoute == 0)
     {
         shortestPathCost = g->dijkstraDistance(stop1_index, stop2_index);
@@ -174,8 +179,14 @@ void Menu::chooseWay()
     }
     else if (decision == 1)
     {
-        std::cout<<"Qual a latitude/longitude de onde vai partir? \n -> ";
-        std::cin >> CW.startLat >> c >> CW.startLong;
+        std::cout<<"Qual a latitude/longitude de onde vai partir? \n";
+
+        cout << "-> Latitude :  ";
+        cin >> CW.startLat;
+        cout << "-> Longitude : ";
+        cin >> CW.startLong;
+        // cout << "Latitude :  "<< CW.startLat << endl;
+        // cout << "Longitude : "<< CW.startLong << endl;
     }
 
 

@@ -21,11 +21,16 @@ class Graph {
      * Struct to store the edges destination node, weight, line and if it can be reached by foot
      */
     struct Edge {
+
         int dest;   //Destination node
         float weight; //An integer weight
-        bool byFoot;
-
         string line;
+
+        bool operator<(const Edge& edge) const
+        {
+            return weight > edge.weight;
+        }
+
     };
 
     /**
@@ -75,6 +80,7 @@ public:
      */
     vector<int> primPath(int v);
 
+
     /**
      * Function that implements the BFS algorithm
      * @param startingNode the node where it starts
@@ -85,6 +91,7 @@ public:
      * Function that returns the graph's vector of stops
      * @return returns the graph's vector of stops
      */
+
     vector<Stop>& getStops();
 
     /**
@@ -112,6 +119,11 @@ public:
      * @param chegada
      * @return
      */
+
+    void addYourLocation(float starLat, float endLat , float maxDistance = 200000);
+    pair<list<int>, int> BFS(int partida, int chegada);
+    pair<list<int>, float> primDistance(int partida, string zone);
+
     pair<list<int>, float> dijkstraDistance(int partida, int chegada);
 
     /**
@@ -130,9 +142,9 @@ public:
      * @return
      */
     pair<list<int>, float> minZonesDistance(int partida, int chegada);
+
+
 };
 
 
 #endif
-
-

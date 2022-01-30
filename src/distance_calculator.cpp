@@ -14,8 +14,7 @@ float calculateDistance(GeoPoint g1, GeoPoint g2)
     lat2 = g2.latitude;
     long2 = g2.longitude;
 
-    if (distance < 0)
-        cout << "Oh NO !!!!!\n";
+ 
 
     double dLat = (lat2 - lat1) *
                   M_PI / 180.0;
@@ -30,5 +29,4 @@ float calculateDistance(GeoPoint g1, GeoPoint g2)
     double rad = 6371;
     double c = 2 * asin(sqrt(a));
     return rad * c;
-    return distance;
 }

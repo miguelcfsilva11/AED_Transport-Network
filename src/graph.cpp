@@ -5,19 +5,19 @@
 #include "distance_calculator.h"
 
 
-
+// Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num + 1)
 {
 }
 
-
-void Graph::addEdge(int src, int dest, float weight, string& line)
+// Add edge from source to destination with a certain weight
+void Graph::addEdge(int src, int dest, float weight, string &line)
 {
     if (src < 0 || src > n - 1 || dest < 0 || dest > n - 1)
         return;
-    nodes[src].adj.push_back({dest, weight, 0, line});
+    nodes[src].adj.push_back({dest, weight,line});
     if (!hasDir)
-        nodes[dest].adj.push_back({src, weight, 0, line});
+        nodes[dest].adj.push_back({src, weight, line});
 }
 
 void Graph::setStops(vector<Stop> &stops)
@@ -37,28 +37,50 @@ int Graph::getStopIndex(string &code)
     return -1;
 }
 
-void Graph::BFS(int startingNode)
+pair<list<int>, int> Graph::BFS(int partida, int chegada)
 {
     unordered_set<int> visitedNodes;
     queue<int> to_visitNodes;
-    to_visitNodes.push(startingNode);
-    visitedNodes.insert(startingNode);
+    to_visitNodes.push(partida);
+    visitedNodes.insert(partida);
+    
+    unordered_map<int, int> pred; 
+
     while (to_visitNodes.size())
     {
         int currentNode = to_visitNodes.front();
         to_visitNodes.pop();
-        cout << stops[currentNode].code << "->";
-
 
         for (Edge g : nodes[currentNode].adj)
         {
             if (visitedNodes.find(g.dest) == visitedNodes.end())
             {
+                pred[g.dest] = currentNode;
                 to_visitNodes.push(g.dest);
                 visitedNodes.insert(g.dest);
             }
         }
     }
+
+
+    list<int> caminho;
+    int paragem_anterior;
+    int paragem_corrente= chegada; 
+    caminho.push_front(paragem_corrente);
+
+    int totalCost = 0;
+
+    do{
+        paragem_anterior = pred[paragem_corrente];
+        caminho.push_front(paragem_anterior);
+        paragem_corrente = paragem_anterior;
+        totalCost += 1;
+        
+    } while(paragem_corrente != partida);
+
+
+    return make_pair(caminho, totalCost);
+
 }
 
 void Graph::printAdjancies(int node)
@@ -69,73 +91,82 @@ void Graph::printAdjancies(int node)
         cout << stops[e.dest].code << ", ";
     }
 }
-/*
-int Graph::prim(int v)
+
+
+void Graph::addYourLocation(float starLat, float startLong, float maxDistance)
 {
-    vector<Node> alreadySeen;
-
-    int totalWeight = 0;
-    int minWeight = INT32_MAX;
-    int d;
-    alreadySeen.push_back(nodes[0]);
-
-    for (int j = 0; j < v; j++)
+    // Plus 1 Node
+    n++;
+    string zone = "how zone?";
+    string line = "on foot?";
+    GeoPoint yourLocation{starLat, startLong};
+    stops.push_back({"Your Location", "User Current Location", zone, starLat, startLong});
+    float distance;
+    cout << "Voce está disposto a andar " << maxDistance << endl;
+    for (int i = 0; i < n - 1; i++)
     {
-        for (int i = 0; i < alreadySeen.size(); i++)
+        GeoPoint stopPoint{stops[i].latitude, stops[i].longitude};
+        distance = calculateDistance(yourLocation, stopPoint);
+        if ((distance * 1000) < maxDistance)
         {
-            for (std::list<Edge>::const_iterator it = alreadySeen[i].adj.begin(); it != alreadySeen[i].adj.end(); it++)
-            {
-                if (it->weight <= minWeight && find(alreadySeen.begin(), alreadySeen.end(), nodes[it->dest]) == alreadySeen.end())
-                {
-                    minWeight = it->weight;
-                    d = it->dest;
-                }
-            }
+            cout << stops[i].code << "está a " << distance * 1000 << " da sua localizacao" << endl;
+            cout << "Edge adicionada\n";
+            addEdge(n - 1, i, distance, line);
         }
-        alreadySeen.push_back(nodes[d - 1]);
-        totalWeight = totalWeight + minWeight;
-        minWeight = INT32_MAX;
+    }
+}
+
+pair<list<int>, float> Graph::primDistance(int partida, string zone) {
+
+    std::priority_queue<Edge> p1;
+    Edge curr;
+    list<int> caminho;
+    int distance = 0;
+    int min = INT_MAX / 2;
+
+    for (Edge edge : nodes[partida].adj)
+    {
+        if (stops[edge.dest].zone == zone)
+            p1.push(edge);
     }
 
-    return totalWeight;
-}
-vector<int> Graph::primPath(int v)
-{
-    vector<Node> alreadySeen;
-    vector<int> caminhos;
-    int totalWeight = 0;
-    int minWeight = INT32_MAX;
-    int d;
-    alreadySeen.push_back(nodes[0]);
-
-    n³
-    for (int j = 0; j < v; j++)
+    unordered_map<int, bool> visited;
+    for (int i = 1; i < nodes.size() + 1; i++)
     {
-        for (int i = 0; i < alreadySeen.size(); i++)
-        {
-            for (std::list<Edge>::const_iterator it = alreadySeen[i].adj.begin(); it != alreadySeen[i].adj.end(); it++)
-            {
-                if (it->weight <= minWeight && find(alreadySeen.begin(), alreadySeen.end(), nodes[it->dest]) == alreadySeen.end())
+        if (i == partida)
+            visited[i] = true;
+        else
+            visited[i] = false;
+    }
+    caminho.push_back(partida);
+    
+    while (p1.size())
+    {
+        curr = p1.top();
+        p1.pop();
+        
+        if (!visited[curr.dest]) {
+            caminho.push_back(curr.dest);
+            for (Edge edge: nodes[curr.dest].adj) {
+                if (stops[edge.dest].zone == zone)
                 {
-                    minWeight = it->weight;
-                    d = it->dest;
+                    p1.push(edge);
                 }
             }
+            distance += curr.weight;
+            visited[curr.dest] = true;
         }
-        alreadySeen.push_back(nodes[d - 1]);
-        caminhos.push_back(minWeight);
-        totalWeight = totalWeight + minWeight;
-        minWeight = INT32_MAX;
     }
 
-    return caminhos;
+
+    return make_pair(caminho, distance);
 }
-*/
+
 pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 {
 
-    GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
-    GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
+    GeoPoint originG = {stops[origin].latitude, stops[origin].longitude};
+    GeoPoint destinG = {stops[chegada].latitude, stops[chegada].longitude};
 
     // Nodes that have been visited
     unordered_set<int> visitados;
@@ -160,7 +191,7 @@ pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
 
 
     int current;
-    anteriores[current] =current;
+    anteriores[current] = current;
     while (visitados.size() != n)
     {
 
@@ -173,37 +204,31 @@ pair<list<int>, float> Graph::dijkstraDistance(int origin, int chegada)
                 node_distance_from_origin[current] + e.weight < node_distance_from_origin[e.dest])
             {
                 node_distance_from_origin[e.dest] = node_distance_from_origin[current] + e.weight;
-                sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current] + e.weight);
+                sorted_distances.decreaseKey(e.dest, node_distance_from_origin[current] + e.weight);
                 anteriores[e.dest] = current;
-            
-                
             }
         }
     }
-
     list<int> caminho;
     int paragem_anterior;
-    int paragem_corrente= chegada; 
+    int paragem_corrente = chegada;
     caminho.push_front(paragem_corrente);
-    do{
+    do
+    {
         paragem_anterior = anteriores[paragem_corrente];
         caminho.push_front(paragem_anterior);
         paragem_corrente = paragem_anterior;
-        
-    }while(paragem_corrente != origin);
-    
+    } while (paragem_corrente != origin);
 
     return make_pair(caminho, node_distance_from_origin[chegada]);
 }
 
-
 pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string currLine)
 {
 
-    GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
-    GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
+    GeoPoint originG = {stops[origin].latitude, stops[origin].longitude};
+    GeoPoint destinG = {stops[chegada].latitude, stops[chegada].longitude};
 
-    // Nodes that have been visited
     unordered_set<int> visitados;
 
     MinHeap<int, float> sorted_distances(n, n);
@@ -230,7 +255,7 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
 
     int current;
     bool found = false;
-    anteriores[current] =current;
+    anteriores[current] = current;
     while (visitados.size() != n)
     {
 
@@ -247,7 +272,7 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
                     {
                         stopCurrLine[e.dest] = currLine;
                         node_distance_from_origin[e.dest] = node_distance_from_origin[current];
-                        sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current]);
+                        sorted_distances.decreaseKey(e.dest, node_distance_from_origin[current]);
                         anteriores[e.dest] = current;
                     }
                 }
@@ -258,34 +283,32 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
                     {
                         stopCurrLine[e.dest] = e.line;
                         node_distance_from_origin[e.dest] = node_distance_from_origin[current] + 1;
-                        sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current] + 1);
+                        sorted_distances.decreaseKey(e.dest, node_distance_from_origin[current] + 1);
                         anteriores[e.dest] = current;
                     }
                 }
-                
             }
         }
     }
 
     list<int> caminho;
     int paragem_anterior;
-    int paragem_corrente= chegada; 
+    int paragem_corrente = chegada;
     float totalCost = 0;
 
-
     caminho.push_front(paragem_corrente);
-    do{
+    do
+    {
         paragem_anterior = anteriores[paragem_corrente];
         caminho.push_front(paragem_anterior);
-        
-        GeoPoint g1 = {getStops()[paragem_anterior].latitude,getStops()[paragem_anterior].longitude};
-        GeoPoint g2 = {getStops()[paragem_corrente].latitude,getStops()[paragem_corrente].longitude};
-        
+
+        GeoPoint g1 = {getStops()[paragem_anterior].latitude, getStops()[paragem_anterior].longitude};
+        GeoPoint g2 = {getStops()[paragem_corrente].latitude, getStops()[paragem_corrente].longitude};
+
         totalCost += calculateDistance(g1, g2);
         paragem_corrente = paragem_anterior;
 
-        
-    }while(paragem_corrente != origin);
+    } while (paragem_corrente != origin);
 
     return make_pair(caminho, totalCost);
 }
@@ -293,8 +316,8 @@ pair<list<int>, float> Graph::minLinesDistance(int origin, int chegada, string c
 pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
 {
 
-    GeoPoint originG  ={stops[origin].latitude,stops[origin].longitude};
-    GeoPoint destinG  ={stops[chegada].latitude,stops[chegada].longitude};
+    GeoPoint originG = {stops[origin].latitude, stops[origin].longitude};
+    GeoPoint destinG = {stops[chegada].latitude, stops[chegada].longitude};
 
 
     unordered_set<int> visitados;
@@ -319,7 +342,7 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
 
 
     int current;
-    anteriores[current] =current;
+    anteriores[current] = current;
     while (visitados.size() != n)
     {
 
@@ -335,28 +358,27 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
                     if (node_distance_from_origin[e.dest] > node_distance_from_origin[current])
                     {
                         node_distance_from_origin[e.dest] = node_distance_from_origin[current];
-                        sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current]);
+                        sorted_distances.decreaseKey(e.dest, node_distance_from_origin[current]);
                         anteriores[e.dest] = current;
                     }
                 }
 
-                else
-                    if (node_distance_from_origin[e.dest] > node_distance_from_origin[current] + 1)
-                    {
-                        node_distance_from_origin[e.dest] = node_distance_from_origin[current] + 1;
-                        sorted_distances.decreaseKey(e.dest,node_distance_from_origin[current] + 1);
-                        anteriores[e.dest] = current;
-                    }
-                
+                else if (node_distance_from_origin[e.dest] > node_distance_from_origin[current] + 1)
+                {
+                    node_distance_from_origin[e.dest] = node_distance_from_origin[current] + 1;
+                    sorted_distances.decreaseKey(e.dest, node_distance_from_origin[current] + 1);
+                    anteriores[e.dest] = current;
+                }
             }
         }
     }
 
     list<int> caminho;
     int paragem_anterior;
-    int paragem_corrente= chegada; 
+    int paragem_corrente = chegada;
     caminho.push_front(paragem_corrente);
-    do{
+    do
+    {
         paragem_anterior = anteriores[paragem_corrente];
         caminho.push_front(paragem_anterior);
         paragem_corrente = paragem_anterior;
@@ -365,7 +387,3 @@ pair<list<int>, float> Graph::minZonesDistance(int origin, int chegada)
     
     return make_pair(caminho, node_distance_from_origin[chegada]);
 }
-
-
-
-

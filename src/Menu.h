@@ -19,9 +19,11 @@ using namespace std;
 struct choosingWay
 {
     int howToChooseRoute;
-    bool goOnFoot;
-    bool nightTime;
-    int metresToWalk;
+
+    bool goOnFoot = false;
+    bool nightTime = false;
+    float metresToWalk;
+
     unordered_set<string> hiddenLines;
     float startLat =0.0, endLat=0.0, startLong=0.0, endLong=0.0;
     string startStop=" ", endStop =" ";
@@ -62,11 +64,11 @@ public:
      * Function to choose the right path according to the user's decisions
      */
     void execute();
-
     /**
      * Function to "clean the screen"
      */
     void cleanScreen();
+    void printMST();
 
     /**
      * Function that prints the Menu

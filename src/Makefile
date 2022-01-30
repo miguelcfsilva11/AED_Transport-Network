@@ -1,5 +1,5 @@
 
-output : main.o transport_network.o graph.o distance_calculator.o
+output : main.o transport_network.o graph.o distance_calculator.o Menu.o	
 	@echo "Generating executable"
 	g++ -o output  main.o transport_network.o graph.o Menu.o distance_calculator.o
 main.o: main.cpp

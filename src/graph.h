@@ -56,7 +56,7 @@ public:
     void setStops(vector<Stop>& stop);
     int getStopIndex(string &stop_code);
     void printAdjancies(int node );
-
+    void addYourLocation(float starLat, float endLat , float maxDistance = 200000);
     pair<list<int>, int> BFS(int partida, int chegada);
     pair<list<int>, float> primDistance(int partida, string zone);
     pair<list<int>, float> dijkstraDistance(int partida, int chegada);

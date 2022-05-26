@@ -68,3 +68,8 @@ Queres ir sacar o matplotlib? maybe ?
 Dar a possibilidade de excluir zonas também!!!!!!
 
 
+BFS(N + E)
+
+DIjkstra (e log v)
+
+prim (e log v)      

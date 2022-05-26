@@ -114,37 +114,59 @@ public:
     void printAdjancies(int node );
 
     /**
-     *
-     * @param partida
-     * @param chegada
-     * @return
+     * @brief Adds your current location to the graph with edges connecting to the nodes with the distance 
+     * between  them are lesser then maxDistance.
+     * 
+     * @param starLat  Your Current Location Latitude
+     * @param endLat Your Current Location longitude
+     * @param maxDistance  The maxDistance you want to walk
      */
-
     void addYourLocation(float starLat, float endLat , float maxDistance = 200000);
+
+    /**
+     * @brief  A Breadth First Search starting in node partida and ending in chegada
+     * that returns the path to the node
+     * 
+     * @param partida  starting node
+     * @param chegada   ending node  
+     * @return pair<list<int>, int>  the path and the number to the ending node the number of stops in the returned path
+     */
     pair<list<int>, int> BFS(int partida, int chegada);
+    /**
+     * @brief Returns the minimum cost path to traverse an entire zone starting at the given node
+     * 
+     * @param partida the starting node
+     * @param zone  the zone to be traversed
+     * @return pair<list<int>, float>  the path and the total distance traversed
+     */
     pair<list<int>, float> primDistance(int partida, string zone);
 
+    /**
+     * @brief The  shortest path between two nodes doens't care if zone or lines change
+     * 
+     * @param partida  starting node
+     * @param chegada  ending node
+     */
     pair<list<int>, float> dijkstraDistance(int partida, int chegada);
 
     /**
-     *
-     * @param partida
-     * @param chegada
-     * @param line
-     * @return
+     * @brief The shortest path between two nodes prioritizing not changing lines.
+     * 
+     * @param partida  starting node
+     * @param chegada  ending node
+     * @param line  the starting line
+     * @return pair<list<int>, float>  a  pair with the path and the total distance traversed
      */
     pair<list<int>, float> minLinesDistance(int partida, int chegada, string line);
-
     /**
-     *
-     * @param partida
-     * @param chegada
-     * @return
+     * @brief The shortest path between two nodes prioritizing not changing zones.
+     * 
+     * @param partida  starting node
+     * @param chegada  ending node
+     * @return pair<list<int>, float>  a  pair with the path and the total distance traversed
      */
     pair<list<int>, float> minZonesDistance(int partida, int chegada);
 
-
 };
-
 
 #endif
